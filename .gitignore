@@ -1,0 +1,14 @@
+_qa/
+_shots/
+_dist/
+_src/venv/
+_src/pdf.txt
+_src/shots.sh
+_src/f0*.jpg
+_src/flast.jpg
+[0-9].jpg
+[0-9].jpeg
+.DS_Store
+_src/_originals/
+.claude/
+_src/f120.jpg

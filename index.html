@@ -1,0 +1,1437 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Spoken Jazz &amp; the tingg* Machine — an epicsodic jazz audio musical by Bub Pratt. Two acts, twenty-two scenes, one Remington portable, and a renaissance in a drab Navy town outside Seattle.">
+<meta name="theme-color" content="#0d0b0a">
+<meta property="og:title" content="Spoken Jazz &amp; the tingg* Machine">
+<meta property="og:description" content="An epicsodic jazz audio musical by Bub Pratt. Bremerton, Washington, spring 2000.">
+<meta property="og:type" content="book">
+<meta property="og:image" content="assets/cover.jpg">
+<link rel="icon" href="assets/emblem.jpg">
+<style>*{margin:0}html,body{background:#0d0b0a}</style>
+</head>
+<body>
+<title>Spoken Jazz &amp; the tingg* Machine — Bub Pratt</title>
+
+<script>
+/* Scroll-reveals only engage when scripting is available. Without it the
+   page is a plain, fully legible document. */
+if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
+    "IntersectionObserver" in window) {
+  document.documentElement.className += " js";
+}
+</script>
+
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   SPOKEN JAZZ & THE tingg* MACHINE
+   Ink: newsprint + fluoro pink + riso blue.  Two-colour, badly registered, on purpose.
+   ═══════════════════════════════════════════════════════════════ */
+
+:root{
+  --paper:#e7e0ce;
+  --paper-d:#d8cfb9;
+  --bone:#f4f0e6;
+  --ink:#141110;
+  --ink-2:#2b2521;
+  --pink:#ff2e63;
+  --blue:#2440e8;
+  --teal:#1e8a93;
+  --amber:#e8a33d;
+
+  --poster:"Arial Black","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --machine:"Courier New",Courier,monospace;
+  --standard:Georgia,"Times New Roman",Times,serif;
+  --util:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+
+  --gut:clamp(20px,4.5vw,72px);
+  --rail:64px;
+}
+
+/* the page commits to one printed world; the theme toggle must not bleach it */
+:root[data-theme="dark"],:root[data-theme="light"]{color-scheme:light dark}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--ink);color:var(--ink);
+  font-family:var(--machine);font-size:16px;line-height:1.55;
+  overflow-x:hidden;
+}
+img{max-width:100%;display:block}
+a{color:inherit}
+::selection{background:var(--pink);color:var(--bone)}
+:focus-visible{outline:2px solid var(--pink);outline-offset:3px}
+
+/* ── paper ─────────────────────────────────────────────────── */
+.paper{
+  position:relative;background:var(--paper);
+  background-image:
+    repeating-linear-gradient(0deg,rgba(20,17,16,.021) 0 1px,transparent 1px 3px),
+    radial-gradient(120% 80% at 12% 0%,rgba(255,255,255,.5),transparent 60%);
+}
+.dark{background:#0d0b0a;color:var(--bone)}
+
+/* global grain — one fixed sheet of noise over everything */
+.grain{
+  position:fixed;inset:-120px;z-index:9000;pointer-events:none;
+  opacity:.5;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='180' height='180' filter='url(%23n)' opacity='.42'/></svg>");
+}
+@media (prefers-reduced-motion:no-preference){
+  .grain{animation:swim 6s steps(6) infinite}
+}
+@keyframes swim{
+  0%{transform:translate(0,0)}20%{transform:translate(-14px,9px)}40%{transform:translate(11px,-12px)}
+  60%{transform:translate(-9px,-7px)}80%{transform:translate(13px,10px)}100%{transform:translate(0,0)}
+}
+
+/* ── type ──────────────────────────────────────────────────── */
+.poster{
+  font-family:var(--poster);font-weight:900;text-transform:uppercase;
+  letter-spacing:-.035em;line-height:.83;text-wrap:balance;
+}
+.label{
+  font-family:var(--util);font-size:clamp(9px,.72vw,11px);letter-spacing:.24em;
+  text-transform:uppercase;font-weight:400;
+}
+.tune{font-family:var(--standard);font-style:italic;letter-spacing:0}
+.ast{color:var(--pink);font-style:normal}
+
+/* misregistration: two ink plates that slide into register on reveal.
+   Ghosts are real DOM clones so mixed-typeface headings stay aligned. */
+.mis{position:relative;display:block;--mx:.2em;--my:.05em}
+.mis .t{position:relative;z-index:3;display:block}
+.mis .g{
+  position:absolute;left:0;top:0;width:100%;z-index:1;
+  pointer-events:none;user-select:none;
+  transition:transform 1.2s cubic-bezier(.16,.9,.24,1),opacity 1.2s ease;
+}
+.mis .g *{color:inherit!important}
+.mis .g1{color:var(--pink);mix-blend-mode:multiply;transform:translate(var(--mx),var(--my))}
+.mis .g2{color:var(--blue);mix-blend-mode:multiply;transform:translate(calc(var(--mx)*-.7),calc(var(--my)*-1))}
+.dark .mis .g,.reel .mis .g{mix-blend-mode:screen;opacity:.8}
+.mis.reg .g{transform:translate(0,0);opacity:.22}
+@media (prefers-reduced-motion:reduce){.mis .g{transform:none;opacity:.2}}
+
+/* ── halftone plates ───────────────────────────────────────── */
+.plate{position:relative;overflow:hidden;isolation:isolate}
+.plate img{filter:grayscale(1) contrast(1.32) brightness(1.04);mix-blend-mode:multiply;width:100%}
+.plate::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:radial-gradient(circle,var(--paper) 34%,transparent 36%);
+  background-size:3px 3px;mix-blend-mode:lighten;opacity:.62;
+}
+.dark .plate img{mix-blend-mode:screen;filter:grayscale(1) contrast(1.25) brightness(.95)}
+.dark .plate::after{background-image:radial-gradient(circle,#0d0b0a 34%,transparent 36%);mix-blend-mode:darken}
+.plate.ink img{filter:grayscale(1) contrast(1.5);mix-blend-mode:multiply}
+.plate.raw img{filter:none;mix-blend-mode:normal}
+.plate.raw::after{opacity:.3}
+
+/* registration marks */
+.reg-mark{position:absolute;width:26px;height:26px;opacity:.55;pointer-events:none}
+.reg-mark::before,.reg-mark::after{content:"";position:absolute;background:var(--pink)}
+.reg-mark::before{left:12px;top:0;width:1px;height:26px}
+.reg-mark::after{top:12px;left:0;height:1px;width:26px}
+
+/* ═══════════ THE PLATEN RAIL (nav) ═══════════════════════════ */
+.rail{
+  position:fixed;top:0;right:0;bottom:0;width:var(--rail);z-index:900;
+  display:flex;flex-direction:column;align-items:center;
+  border-left:1px solid rgba(244,240,230,.16);
+  background:linear-gradient(180deg,rgba(13,11,10,.72),rgba(13,11,10,.5));
+  backdrop-filter:blur(3px) saturate(.8);-webkit-backdrop-filter:blur(3px);
+  color:var(--bone);transition:background .5s ease,border-color .5s ease,color .5s ease;
+}
+.rail.on-paper{
+  background:linear-gradient(180deg,rgba(231,224,206,.82),rgba(231,224,206,.66));
+  border-left:1px solid rgba(20,17,16,.2);color:var(--ink);
+}
+.rail-head,.rail-foot{
+  padding:14px 0;text-align:center;width:100%;flex:0 0 auto;
+  font-family:var(--util);font-size:9px;letter-spacing:.2em;opacity:.72;
+}
+.rail-scale{position:relative;flex:1 1 auto;width:100%;cursor:ns-resize;touch-action:none}
+/* the paper scale: ticks every 6px, a long one every 5th */
+.rail-scale::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:14px;
+  background-image:
+    repeating-linear-gradient(180deg,currentColor 0 1px,transparent 1px 30px),
+    repeating-linear-gradient(180deg,currentColor 0 1px,transparent 1px 6px);
+  background-size:14px 100%,8px 100%;opacity:.42;
+}
+.stops{list-style:none;margin:0;padding:0;position:absolute;inset:0}
+.stops li{position:absolute;left:0;right:0;transform:translateY(-50%)}
+.stops button{
+  all:unset;box-sizing:border-box;display:flex;align-items:center;gap:8px;
+  width:100%;padding:3px 0 3px 14px;cursor:pointer;font-family:var(--util);
+  font-size:10px;letter-spacing:.1em;color:inherit;
+}
+.stops i{font-style:normal;opacity:.55;transition:opacity .25s,color .25s}
+.stops em{
+  font-style:normal;position:absolute;right:calc(100% + 12px);white-space:nowrap;
+  font-size:9px;letter-spacing:.22em;padding:4px 9px;background:var(--ink);color:var(--bone);
+  opacity:0;transform:translateX(6px);transition:opacity .28s ease,transform .28s ease;
+  pointer-events:none;
+}
+.stops button:hover i,.stops button:focus-visible i,.stops li.here i{opacity:1;color:var(--pink)}
+.stops button:hover em,.stops button:focus-visible em{opacity:1;transform:translateX(0)}
+.stops li.here button::before{
+  content:"";position:absolute;left:0;width:9px;height:1px;background:var(--pink);top:50%;
+}
+.carriage{
+  position:absolute;left:0;right:0;height:22px;pointer-events:none;
+  transform:translateY(-50%);will-change:top;
+}
+.carriage::before{
+  content:"";position:absolute;left:2px;right:2px;top:50%;height:1px;background:var(--pink);
+  box-shadow:0 0 8px var(--pink);
+}
+.carriage::after{
+  content:"";position:absolute;left:2px;top:calc(50% - 6px);width:5px;height:12px;
+  background:var(--pink);
+}
+.rail-foot b{display:block;font-weight:400;font-size:10px;letter-spacing:.12em;opacity:1}
+.snd{
+  all:unset;cursor:pointer;display:block;width:100%;padding:10px 0;text-align:center;
+  font-family:var(--util);font-size:9px;letter-spacing:.18em;
+  border-top:1px solid currentColor;opacity:.6;transition:opacity .2s,color .2s;
+}
+.snd:hover,.snd:focus-visible{opacity:1;color:var(--pink)}
+.snd.live{opacity:1;color:var(--pink)}
+
+@media (max-width:900px){
+  :root{--rail:0px}
+  .rail{display:none}
+  .mrail{
+    position:fixed;left:0;right:0;top:0;height:3px;z-index:900;background:rgba(20,17,16,.18);
+  }
+  .mrail span{display:block;height:100%;width:0;background:var(--pink)}
+}
+@media (min-width:901px){.mrail{display:none}}
+
+/* ═══════════ COLD OPEN ═══════════════════════════════════════ */
+.reel{
+  position:relative;min-height:100svh;padding-right:var(--rail);
+  display:flex;flex-direction:column;justify-content:flex-end;
+  overflow:hidden;background:#0a0908;
+}
+.reel-bg{position:absolute;inset:0;z-index:0}
+.reel-bg video,.reel-bg img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+}
+.reel-bg img{opacity:0;transition:opacity .9s ease}
+.reel.settled .reel-bg img{opacity:1}
+.reel.settled .reel-bg video{opacity:0;transition:opacity .9s ease}
+.reel-bg::after{ /* grade: cold blue shadows, warm lamp preserved */
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(120% 90% at 62% 62%,transparent 0%,rgba(6,8,16,.42) 62%,rgba(4,5,10,.86) 100%),
+    linear-gradient(180deg,rgba(6,8,16,.66) 0%,transparent 28%,transparent 46%,rgba(5,6,12,.94) 100%),
+    linear-gradient(72deg,rgba(4,5,10,.82) 0%,rgba(4,5,10,.34) 38%,transparent 62%);
+}
+.reel-body{position:relative;z-index:2;padding:var(--gut);padding-bottom:clamp(28px,5vh,64px);width:100%}
+.reel-kicker{
+  color:var(--bone);opacity:.72;margin-bottom:clamp(14px,3vh,34px);
+  display:flex;gap:14px;flex-wrap:wrap;align-items:baseline;
+}
+.reel-kicker s{text-decoration:none;color:var(--pink)}
+
+.title{color:var(--bone);margin:0;font-size:clamp(40px,9.3vw,146px)}
+.title .l2{display:block;font-size:.585em;margin-top:.11em}
+.title .amp{font-family:var(--standard);font-style:italic;font-weight:400;letter-spacing:-.01em;text-transform:none}
+.title .tingg{font-family:var(--machine);font-weight:700;letter-spacing:-.02em;text-transform:lowercase}
+
+.reel-foot{
+  margin-top:clamp(18px,3.4vh,40px);display:flex;flex-wrap:wrap;gap:clamp(14px,3vw,54px);
+  align-items:flex-end;justify-content:space-between;color:var(--bone);
+}
+.byline{font-family:var(--util);font-size:clamp(11px,1.15vw,14px);letter-spacing:.18em;text-transform:uppercase;max-width:44ch}
+.byline b{color:var(--pink);font-weight:400}
+.specs{display:flex;gap:clamp(12px,2vw,30px);opacity:.85}
+.specs div{border-left:1px solid rgba(244,240,230,.3);padding-left:10px}
+.specs strong{display:block;font-family:var(--poster);font-weight:900;font-size:22px;letter-spacing:-.02em;line-height:1}
+.specs span{font-family:var(--util);font-size:8.5px;letter-spacing:.2em;opacity:.7}
+
+/* film-still caption, drawn to the machine on the table */
+.still-cap{
+  position:absolute;z-index:3;right:calc(var(--rail) + clamp(20px,4vw,64px));
+  top:clamp(90px,26vh,260px);text-align:right;color:var(--bone);
+  opacity:0;transform:translateY(-6px);transition:opacity 1s ease .35s,transform 1s ease .35s;
+  max-width:min(46vw,320px);
+}
+.reel.settled .still-cap{opacity:1;transform:translateY(0)}
+.still-cap .rule{display:block;height:1px;background:var(--pink);margin:9px 0 0 auto;width:100%;
+  transform-origin:right;transform:scaleX(0);transition:transform .9s cubic-bezier(.16,.9,.24,1) .8s}
+.reel.settled .still-cap .rule{transform:scaleX(1)}
+.still-cap p{margin:0;font-family:var(--util);font-size:10px;letter-spacing:.16em;line-height:1.7;text-transform:uppercase;opacity:.9}
+.still-cap p em{font-style:normal;color:var(--pink)}
+@media (max-width:760px){.still-cap{display:none}}
+
+.cue{
+  position:absolute;left:clamp(6px,1.1vw,18px);top:50%;transform:translateY(-50%);z-index:3;
+  display:flex;flex-direction:column;align-items:center;gap:14px;color:var(--bone);
+}
+.cue .bar{width:1px;height:52px;background:linear-gradient(180deg,transparent,var(--pink))}
+@media (prefers-reduced-motion:no-preference){.cue .bar{animation:feed 2.8s ease-in-out infinite}}
+@keyframes feed{0%,100%{opacity:.2;transform:scaleY(.45);transform-origin:top}50%{opacity:1;transform:scaleY(1)}}
+.cue span{
+  font-family:var(--util);font-size:9px;letter-spacing:.24em;opacity:.6;
+  writing-mode:vertical-rl;text-orientation:mixed;text-transform:uppercase;
+}
+@media (max-height:620px),(max-width:520px){.cue{display:none}}
+
+/* torn edge where paper covers the film */
+.tear{position:relative;margin-top:-1px}
+.tear svg{display:block;width:100%;height:clamp(18px,3vw,44px)}
+
+/* ═══════════ shared section furniture ═══════════════════════ */
+.sec{position:relative;padding:clamp(64px,10vh,140px) var(--gut);padding-right:calc(var(--gut) + var(--rail))}
+@media (max-width:900px){.sec{padding-right:var(--gut)}.reel{padding-right:0}.still-cap{right:var(--gut)}}
+.eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:clamp(22px,4vh,44px)}
+.eyebrow .n{font-family:var(--poster);font-weight:900;font-size:13px;letter-spacing:0;color:var(--pink)}
+.eyebrow .line{flex:1;height:1px;background:currentColor;opacity:.22}
+.h2{margin:0;font-size:clamp(38px,7.4vw,124px)}
+
+/* ═══════════ THE PREMISE ════════════════════════════════════ */
+.premise-h{max-width:14ch;font-size:clamp(38px,7.6vw,118px)}
+.premise{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:clamp(28px,5vw,84px);align-items:start;margin-top:clamp(28px,5vh,56px);
+}
+@media (max-width:900px){.premise{grid-template-columns:1fr}}
+.lede{
+  font-family:var(--standard);font-size:clamp(19px,2.3vw,31px);line-height:1.36;
+  margin:0;max-width:28ch;
+}
+.lede em{font-style:italic;color:var(--ink-2)}
+.prose{max-width:58ch;font-size:15px;line-height:1.78;color:var(--ink-2)}
+.prose p{margin:0 0 1.15em}
+.prose p:last-child{margin-bottom:0}
+.prose.cap p:first-child::first-letter{
+  font-family:var(--poster);font-weight:900;float:left;font-size:3.3em;line-height:.76;
+  margin:.05em .1em 0 0;color:var(--ink);
+}
+.prose b{font-weight:400;color:var(--ink);border-bottom:2px solid var(--pink);padding-bottom:1px}
+
+.side{position:relative}
+.tape{
+  position:absolute;width:96px;height:26px;background:rgba(244,240,230,.62);
+  border-left:1px dashed rgba(20,17,16,.14);border-right:1px dashed rgba(20,17,16,.14);
+  box-shadow:0 1px 3px rgba(20,17,16,.16);z-index:4;
+}
+.pinned{position:relative}
+.side .plate{transform:rotate(-1.4deg);box-shadow:0 14px 34px -22px rgba(20,17,16,.8)}
+.side figcaption{
+  margin-top:16px;font-family:var(--util);font-size:9.5px;letter-spacing:.18em;
+  text-transform:uppercase;opacity:.62;line-height:1.9;
+}
+.stats{display:flex;flex-wrap:wrap;gap:1px;margin-top:clamp(30px,5vh,54px);background:rgba(20,17,16,.16)}
+.stats div{flex:1 1 120px;background:var(--paper);padding:18px 16px}
+.stats strong{display:block;font-family:var(--poster);font-weight:900;font-size:clamp(30px,4.4vw,54px);line-height:.9;letter-spacing:-.04em}
+.stats span{font-family:var(--util);font-size:9px;letter-spacing:.2em;text-transform:uppercase;opacity:.62}
+.stats div:nth-child(2) strong,.stats div:nth-child(4) strong{color:var(--pink)}
+
+/* ═══════════ THE SETLIST ════════════════════════════════════ */
+.setlist-wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.62fr);gap:clamp(26px,4.5vw,72px);align-items:start}
+@media (max-width:1000px){.setlist-wrap{grid-template-columns:1fr}}
+.acts{display:flex;gap:0;margin-bottom:26px;border:1px solid rgba(244,240,230,.28)}
+.acts button{
+  all:unset;cursor:pointer;flex:1;padding:11px 16px;text-align:center;
+  font-family:var(--util);font-size:10px;letter-spacing:.24em;text-transform:uppercase;
+  color:rgba(244,240,230,.6);transition:background .3s,color .3s;
+}
+.acts button+button{border-left:1px solid rgba(244,240,230,.28)}
+.acts button[aria-selected="true"]{background:var(--pink);color:#0d0b0a}
+.acts button:hover{color:var(--bone)}
+
+.deck{position:relative;perspective:1600px}
+.side-a,.side-b{transition:opacity .45s ease,transform .55s cubic-bezier(.2,.85,.3,1)}
+.side-b{position:absolute;inset:0;opacity:0;pointer-events:none;transform:rotateY(-14deg) translateZ(-30px)}
+.deck.flipped .side-a{opacity:0;pointer-events:none;transform:rotateY(14deg) translateZ(-30px)}
+.deck.flipped .side-b{opacity:1;pointer-events:auto;transform:none;position:relative}
+
+.row{border-top:1px solid rgba(244,240,230,.17)}
+.row:last-child{border-bottom:1px solid rgba(244,240,230,.17)}
+.row>button{
+  all:unset;box-sizing:border-box;cursor:pointer;display:grid;width:100%;
+  grid-template-columns:44px minmax(0,1fr) auto;gap:clamp(10px,2vw,26px);align-items:baseline;
+  padding:clamp(11px,1.6vh,18px) 10px clamp(11px,1.6vh,18px) 4px;
+  transition:background .22s ease,color .22s ease,padding-left .22s ease;
+}
+.row>button:hover,.row>button:focus-visible,.row.open>button{
+  background:var(--pink);color:#0d0b0a;padding-left:14px;
+}
+.row .num{font-family:var(--util);font-size:10px;letter-spacing:.1em;opacity:.55}
+.row>button:hover .num,.row.open>button .num{opacity:.9}
+.row .name{
+  font-family:var(--poster);font-weight:900;text-transform:uppercase;letter-spacing:-.025em;
+  font-size:clamp(17px,2.4vw,31px);line-height:1;
+}
+.row .name .ast{color:var(--pink)}
+.row>button:hover .name .ast,.row.open>button .name .ast{color:#0d0b0a}
+.row .tune{font-size:clamp(11px,1.15vw,15px);opacity:.6;white-space:nowrap;text-align:right}
+.row>button:hover .tune,.row.open>button .tune{opacity:.9}
+/* on a phone the tune drops beneath the title instead of fighting it */
+@media (max-width:680px){
+  .row>button{grid-template-columns:32px minmax(0,1fr);column-gap:12px;row-gap:5px}
+  .row .tune{grid-column:2;text-align:left;white-space:normal;font-size:13px;opacity:.55}
+}
+
+.drawer{height:0;overflow:hidden;transition:height .42s cubic-bezier(.2,.85,.3,1)}
+.drawer-in{padding:clamp(16px,2.4vh,28px) 4px clamp(24px,3.4vh,38px) 48px;max-width:74ch}
+@media (max-width:640px){.drawer-in{padding-left:8px}}
+.note{font-size:14px;line-height:1.8;color:rgba(244,240,230,.74);margin:0 0 18px}
+.script{
+  font-family:var(--machine);font-size:13.5px;line-height:1.95;color:var(--bone);
+  border-left:2px solid var(--pink);padding-left:18px;margin:0;
+}
+.script b{font-weight:400;color:var(--pink);letter-spacing:.04em}
+.script i{font-style:italic;opacity:.55;display:block;margin:.5em 0}
+.script .v{display:block;padding-left:2.2em;text-indent:-2.2em}
+
+/* the plate that swaps on hover */
+.viewer{position:sticky;top:clamp(24px,10vh,90px)}
+.viewer .frame{position:relative;border:1px solid rgba(244,240,230,.2);overflow:hidden;aspect-ratio:1/1;background:#0d0b0a}
+.viewer .frame img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:0;transition:opacity .55s ease,transform 1.2s ease;transform:scale(1.04);
+  filter:grayscale(1) contrast(1.2) brightness(.9);mix-blend-mode:screen;
+}
+.viewer .frame img.on{opacity:1;transform:scale(1)}
+.viewer .frame::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:radial-gradient(circle,#0d0b0a 34%,transparent 36%);
+  background-size:3px 3px;mix-blend-mode:darken;opacity:.55;
+}
+.viewer .meta{
+  display:flex;justify-content:space-between;gap:16px;padding:12px 2px 0;
+  font-family:var(--util);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(244,240,230,.6);border-top:1px solid rgba(244,240,230,.2);margin-top:12px;
+}
+.viewer .meta em{font-style:normal;color:var(--pink)}
+@media (max-width:1000px){.viewer{display:none}}
+
+/* ═══════════ THE MACHINE ════════════════════════════════════ */
+.machine-sec{background:#0d0b0a;color:var(--bone);overflow:hidden}
+.machine-grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(28px,5vw,80px);align-items:start}
+@media (max-width:960px){.machine-grid{grid-template-columns:1fr}}
+.defn{font-size:15px;line-height:1.85;color:rgba(244,240,230,.76);max-width:44ch}
+.defn p{margin:0}
+.defn .word{font-family:var(--machine);font-size:clamp(30px,4.2vw,58px);color:var(--bone);letter-spacing:-.02em;display:block;margin-bottom:6px}
+.defn .word i{color:var(--pink);font-style:normal}
+.defn .pos{font-family:var(--standard);font-style:italic;opacity:.62;margin-bottom:18px;display:block}
+.machine-grid blockquote{
+  margin:26px 0 0;padding-left:18px;border-left:2px solid var(--pink);max-width:44ch;
+  font-family:var(--standard);font-style:italic;font-size:clamp(16px,1.7vw,19px);line-height:1.55;color:var(--bone);
+}
+.machine-grid blockquote cite{display:block;font-style:normal;font-family:var(--util);font-size:9.5px;letter-spacing:.2em;opacity:.55;margin-top:10px;text-transform:uppercase}
+
+/* the sheet */
+.rig{position:relative}
+.platen{
+  height:22px;border-radius:11px;
+  background:linear-gradient(180deg,#3a332d,#141110 60%,#2a2420);
+  box-shadow:0 6px 18px -6px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,255,255,.13);
+  position:relative;z-index:3;
+}
+.platen::before,.platen::after{
+  content:"";position:absolute;top:-4px;width:14px;height:30px;border-radius:3px;
+  background:linear-gradient(180deg,#4a423a,#1a1614);
+}
+.platen::before{left:-6px}.platen::after{right:-6px}
+.sheet{
+  position:relative;z-index:2;margin:-2px 0 0;background:var(--bone);color:#1a1614;
+  min-height:min(52vh,420px);max-height:56vh;overflow:hidden;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:clamp(20px,3vw,38px) clamp(16px,2.6vw,34px) clamp(22px,3vw,34px);
+  box-shadow:0 30px 60px -34px rgba(0,0,0,.95);cursor:text;
+  background-image:linear-gradient(180deg,rgba(20,17,16,.13),transparent 42px);
+}
+.sheet .out{
+  font-family:var(--machine);font-size:clamp(12px,1.32vw,15.5px);line-height:1.72;
+  white-space:pre-wrap;word-break:normal;overflow-wrap:normal;letter-spacing:.01em;
+}
+.ch{display:inline-block;white-space:pre}
+.caret{display:inline-block;width:.62em;height:1.05em;background:#1a1614;vertical-align:-.19em;margin-left:1px}
+@media (prefers-reduced-motion:no-preference){.caret{animation:blink 1.06s steps(1) infinite}}
+@keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}}
+.sheet .hint{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center;
+  font-family:var(--util);font-size:10px;letter-spacing:.24em;text-transform:uppercase;
+  color:rgba(26,22,20,.42);pointer-events:none;transition:opacity .3s;white-space:nowrap;
+}
+.sheet.dirty .hint{opacity:0}
+.keyin{position:absolute;opacity:0;width:1px;height:1px;left:-9999px}
+
+.machine-bar{
+  display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;
+  margin-top:16px;font-family:var(--util);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(244,240,230,.55);
+}
+.machine-bar .pos em{font-style:normal;color:var(--pink)}
+.machine-bar .btns{display:flex;gap:8px;flex-wrap:wrap}
+.mbtn{
+  all:unset;cursor:pointer;padding:8px 14px;border:1px solid rgba(244,240,230,.3);
+  font-family:var(--util);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(244,240,230,.8);transition:background .22s,color .22s,border-color .22s;
+}
+.mbtn:hover,.mbtn:focus-visible{background:var(--pink);color:#0d0b0a;border-color:var(--pink)}
+.bell{color:var(--pink);opacity:0;transition:opacity .1s}
+.bell.ring{opacity:1;transition:none}
+
+/* ═══════════ POEMS ══════════════════════════════════════════ */
+.poems{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));gap:clamp(26px,4vw,60px);margin-top:clamp(20px,4vh,40px)}
+.poem{position:relative;background:var(--bone);padding:clamp(24px,3vw,40px);box-shadow:0 22px 44px -34px rgba(20,17,16,.9)}
+.poem:nth-child(1){transform:rotate(-.75deg)}
+.poem:nth-child(2){transform:rotate(.6deg)}
+.poem:nth-child(3){transform:rotate(-.35deg)}
+.poem:nth-child(4){transform:rotate(.9deg)}
+.poem h3{
+  margin:0 0 4px;font-family:var(--poster);font-weight:900;text-transform:uppercase;
+  letter-spacing:-.03em;font-size:clamp(19px,2.1vw,27px);line-height:.95;
+}
+.poem .src{font-family:var(--util);font-size:9px;letter-spacing:.2em;text-transform:uppercase;opacity:.5;display:block;margin-bottom:18px}
+.poem pre{
+  margin:0;font-family:var(--machine);font-size:13.4px;line-height:1.78;
+  white-space:pre-wrap;color:var(--ink-2);
+}
+.poem .stamp{position:absolute;right:-10px;top:-10px;width:52px;opacity:.9;mix-blend-mode:multiply}
+.poem::after{
+  content:"";position:absolute;left:50%;top:-11px;transform:translateX(-50%) rotate(-1.5deg);
+  width:84px;height:22px;background:rgba(255,46,99,.14);border-left:1px dashed rgba(20,17,16,.12);border-right:1px dashed rgba(20,17,16,.12);
+}
+
+/* ═══════════ TICKER ═════════════════════════════════════════ */
+.ticker{
+  background:var(--pink);color:#0d0b0a;overflow:hidden;padding:12px 0;
+  border-top:1px solid rgba(20,17,16,.35);border-bottom:1px solid rgba(20,17,16,.35);
+}
+.ticker .run{display:flex;width:max-content;gap:0}
+@media (prefers-reduced-motion:no-preference){.ticker .run{animation:roll 52s linear infinite}}
+@keyframes roll{to{transform:translateX(-50%)}}
+.ticker span{
+  font-family:var(--poster);font-weight:900;text-transform:uppercase;letter-spacing:-.02em;
+  font-size:clamp(15px,1.9vw,26px);padding:0 22px;white-space:nowrap;
+}
+.ticker span::after{content:"✦";margin-left:22px;opacity:.5;font-family:var(--util);font-size:.6em;vertical-align:.25em}
+
+/* ═══════════ CAST ═══════════════════════════════════════════ */
+.cast{
+  margin:0;padding:0;display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));
+  gap:1px;background:rgba(244,240,230,.16);border:1px solid rgba(244,240,230,.16);
+}
+.cast li{list-style:none;background:#0d0b0a;padding:18px 18px 20px;transition:background .2s,color .2s}
+.cast li:hover{background:var(--pink);color:#0d0b0a}
+.cast h4{
+  margin:0 0 7px;font-family:var(--poster);font-weight:900;text-transform:uppercase;
+  letter-spacing:-.025em;font-size:clamp(16px,1.7vw,21px);line-height:1;
+}
+.cast p{margin:0;font-size:12.5px;line-height:1.68;color:rgba(244,240,230,.62)}
+.cast li:hover p{color:rgba(13,11,10,.86)}
+.cast li.star{background:var(--bone);color:var(--ink)}
+.cast li.star p{color:var(--ink-2)}
+.cast li.star:hover{background:var(--pink);color:#0d0b0a}
+.cast li.star .ast{color:var(--pink)}
+.more{
+  all:unset;box-sizing:border-box;display:none;cursor:pointer;width:100%;margin-top:18px;
+  padding:16px;text-align:center;border:1px solid rgba(244,240,230,.3);
+  font-family:var(--util);font-size:10px;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(244,240,230,.8);transition:background .22s,color .22s,border-color .22s;
+}
+.more:hover,.more:focus-visible{background:var(--pink);color:#0d0b0a;border-color:var(--pink)}
+@media (max-width:680px){
+  .cast li{padding:14px 15px 15px}
+  .cast h4{font-size:15px;margin-bottom:5px}
+  .cast p{font-size:12px;line-height:1.6}
+  .cast li:nth-child(n+9){display:none}
+  .cast.all li:nth-child(n+9){display:block}
+  .more{display:block}
+}
+
+/* ═══════════ LISTEN / AUTHOR ════════════════════════════════ */
+.two{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(30px,5vw,84px);align-items:center}
+@media (max-width:900px){.two{grid-template-columns:1fr}}
+.author-plate{position:relative}
+.author-plate .plate{filter:sepia(.12)}
+.author-plate .cap{
+  position:absolute;left:0;bottom:-14px;background:var(--pink);color:#0d0b0a;
+  padding:7px 13px;font-family:var(--util);font-size:9px;letter-spacing:.2em;text-transform:uppercase;
+}
+.bio p{max-width:56ch;font-size:15px;line-height:1.8;color:var(--ink-2)}
+.bio p:first-of-type{font-family:var(--standard);font-size:clamp(18px,2vw,25px);line-height:1.45;color:var(--ink)}
+.books{list-style:none;padding:0;margin:26px 0 0;border-top:1px solid rgba(20,17,16,.2)}
+.books li{
+  display:flex;justify-content:space-between;gap:16px;align-items:baseline;
+  padding:11px 0;border-bottom:1px solid rgba(20,17,16,.2);
+}
+.books b{font-family:var(--poster);font-weight:900;text-transform:uppercase;letter-spacing:-.02em;font-size:clamp(14px,1.5vw,19px)}
+.books span{font-family:var(--util);font-size:9px;letter-spacing:.2em;opacity:.55;white-space:nowrap}
+.cta{
+  display:inline-flex;align-items:center;gap:14px;margin-top:32px;text-decoration:none;
+  background:var(--ink);color:var(--bone);padding:16px 24px;
+  font-family:var(--util);font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;
+  transition:background .25s,color .25s,transform .25s;
+}
+.cta:hover,.cta:focus-visible{background:var(--pink);color:#0d0b0a;transform:translate(-2px,-2px)}
+.cta .arr{font-family:var(--machine);font-size:14px}
+
+/* ═══════════ BUY ════════════════════════════════════════════ */
+.buy{background:var(--pink);color:#0d0b0a}
+.buy .eyebrow{color:#0d0b0a}
+.buy .eyebrow .n{color:#0d0b0a}
+.buy-grid{
+  display:grid;grid-template-columns:minmax(0,.42fr) minmax(0,1fr);
+  gap:clamp(26px,5vw,72px);align-items:center;
+}
+@media (max-width:820px){.buy-grid{grid-template-columns:1fr;gap:28px}}
+.buy-art{position:relative;box-shadow:0 26px 60px -30px rgba(13,11,10,.85)}
+.buy-art img{width:100%;display:block}
+.buy h2{margin:0;font-size:clamp(34px,6.4vw,92px);color:#0d0b0a}
+.buy .sell{
+  margin:20px 0 0;max-width:46ch;font-size:15.5px;line-height:1.75;
+  color:rgba(13,11,10,.82);
+}
+.buy .formats{
+  display:flex;flex-wrap:wrap;gap:0;margin:26px 0 0;
+  border-top:1px solid rgba(13,11,10,.3);border-bottom:1px solid rgba(13,11,10,.3);
+}
+.buy .formats div{
+  padding:12px 22px 12px 0;margin-right:22px;
+  border-right:1px solid rgba(13,11,10,.3);
+}
+.buy .formats div:last-child{border-right:0;margin-right:0;padding-right:0}
+.buy .formats b{
+  display:block;font-family:var(--poster);font-weight:900;text-transform:uppercase;
+  letter-spacing:-.02em;font-size:clamp(15px,1.7vw,21px);line-height:1.1;
+}
+.buy .formats span{font-family:var(--util);font-size:9px;letter-spacing:.2em;text-transform:uppercase;opacity:.62}
+.buy-cta{
+  display:inline-flex;align-items:center;gap:16px;margin-top:30px;text-decoration:none;
+  background:#0d0b0a;color:var(--bone);padding:19px 30px;
+  font-family:var(--util);font-size:clamp(11px,1.2vw,13px);letter-spacing:.24em;text-transform:uppercase;
+  transition:transform .22s ease,box-shadow .22s ease;
+  box-shadow:6px 6px 0 rgba(13,11,10,.28);
+}
+.buy-cta:hover,.buy-cta:focus-visible{transform:translate(-3px,-3px);box-shadow:10px 10px 0 rgba(13,11,10,.32)}
+.buy-cta .arr{font-family:var(--machine);font-size:16px;color:var(--pink)}
+.buy .fine{
+  margin:16px 0 0;font-family:var(--util);font-size:9.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:rgba(13,11,10,.55);
+}
+.reel-buy{
+  display:inline-flex;align-items:center;gap:10px;margin-top:16px;text-decoration:none;
+  border:1px solid rgba(244,240,230,.45);color:var(--bone);padding:11px 18px;
+  font-family:var(--util);font-size:10px;letter-spacing:.22em;text-transform:uppercase;
+  transition:background .22s,color .22s,border-color .22s;
+}
+.reel-buy:hover,.reel-buy:focus-visible{background:var(--pink);border-color:var(--pink);color:#0d0b0a}
+
+/* ═══════════ COLOPHON ═══════════════════════════════════════ */
+.colophon{background:#0d0b0a;color:var(--bone);padding:clamp(56px,9vh,110px) var(--gut) 40px;padding-right:calc(var(--gut) + var(--rail))}
+@media (max-width:900px){.colophon{padding-right:var(--gut)}}
+.memoriam{
+  text-align:center;padding:clamp(30px,6vh,64px) 0;border-top:1px solid rgba(244,240,230,.16);
+  border-bottom:1px solid rgba(244,240,230,.16);margin-bottom:clamp(30px,5vh,56px);
+}
+.memoriam img{width:clamp(70px,9vw,104px);margin:0 auto 22px;filter:invert(1) grayscale(1) contrast(1.3);mix-blend-mode:screen;opacity:.85}
+.memoriam p{margin:0;font-family:var(--standard);font-style:italic;font-size:clamp(16px,1.9vw,23px)}
+.memoriam small{display:block;margin-top:12px;font-family:var(--util);font-size:9px;letter-spacing:.22em;text-transform:uppercase;opacity:.45}
+.colo-grid{display:flex;flex-wrap:wrap;gap:clamp(18px,4vw,54px);justify-content:space-between;font-family:var(--util);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,240,230,.45);line-height:2}
+.colo-grid strong{display:block;color:rgba(244,240,230,.8);font-weight:400;margin-bottom:4px}
+
+/* reveal — only ever hidden when JS is present to bring it back */
+.js .rise{opacity:0;transform:translateY(22px);transition:opacity .8s cubic-bezier(.2,.8,.3,1),transform .8s cubic-bezier(.2,.8,.3,1)}
+.js .rise.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  .rise{opacity:1;transform:none;transition:none}
+  .side-a,.side-b,.drawer,.viewer .frame img{transition:none}
+}
+</style>
+
+<div class="grain" aria-hidden="true"></div>
+<div class="mrail" aria-hidden="true"><span id="mprog"></span></div>
+
+<!-- ══════════════════ NAV: THE PLATEN RAIL ══════════════════ -->
+<nav class="rail" id="rail" aria-label="Scene navigation">
+  <div class="rail-head">TINGG<span style="color:var(--pink)">*</span></div>
+  <div class="rail-scale" id="scale">
+    <ul class="stops" id="stops"></ul>
+    <div class="carriage" id="carriage"></div>
+  </div>
+  <div class="rail-foot">
+    <b id="pageno">PP 001</b>
+    <span style="opacity:.5">/ 384</span>
+  </div>
+  <button class="snd" id="snd" aria-pressed="false">SND<br>OFF</button>
+</nav>
+
+<!-- ══════════════════ COLD OPEN ══════════════════ -->
+<header class="reel" id="s0">
+  <div class="reel-bg">
+    <video id="film" autoplay muted playsinline preload="auto"
+           poster="assets/opening-first.jpg" aria-hidden="true">
+      <source src="assets/opening.mp4" type="video/mp4">
+    </video>
+    <img src="assets/opening-last.jpg" alt="" aria-hidden="true">
+  </div>
+
+  <figure class="still-cap">
+    <p>Plate I — the basement, after midnight.<br><em>The machine at rest.</em></p>
+    <span class="rule"></span>
+  </figure>
+
+  <div class="reel-body">
+    <div class="reel-kicker label">
+      <span>Kitsap County, Washington</span><s>/</s><span>Spring 2000</span><s>/</s><span>Two Acts</span>
+    </div>
+
+    <h1 class="title poster">
+      <span class="mis"><span class="t">Spoken Jazz</span></span>
+      <span class="l2 mis"><span class="t"><span class="amp">&amp; the</span> <span class="tingg">tingg<span class="ast">*</span></span> Machine</span></span>
+    </h1>
+
+    <div class="reel-foot">
+      <p class="byline">An epicsodic jazz audio musical<br>by <b>Bub Pratt</b>
+        <a class="reel-buy" href="https://www.amazon.com/Spoken-Jazz-Tingg-Machine-episodic-ebook/dp/B0H37R6NS3" target="_blank" rel="noopener">Buy on Amazon <span aria-hidden="true">→</span></a>
+      </p>
+      <div class="specs">
+        <div><strong>02</strong><span>Acts</span></div>
+        <div><strong>22</strong><span>Scenes</span></div>
+        <div><strong>384</strong><span>Pages</span></div>
+        <div><strong>01</strong><span>Remington</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cue"><span class="bar"></span><span>Feed the paper</span></div>
+</header>
+
+<div class="tear paper" aria-hidden="true">
+  <svg viewBox="0 0 1200 40" preserveAspectRatio="none"><path d="M0 40V14c40 6 62-9 104-4s54 12 96 6 66-14 108-9 62 13 104 8 58-13 100-8 66 12 108 7 60-14 102-9 64 13 106 8 60-12 102-7 62 10 70 6v22z" fill="#e7e0ce"/></svg>
+</div>
+
+<!-- ══════════════════ THE PREMISE ══════════════════ -->
+<section class="sec paper" id="s1">
+  <span class="reg-mark" style="top:22px;right:calc(var(--rail) + 22px)"></span>
+  <div class="eyebrow label"><span class="n">01</span><span>The Premise</span><span class="line"></span><span>Bremerton, WA</span></div>
+
+  <h2 class="h2 poster premise-h rise"><span class="mis"><span class="t">A renaissance in a drab navy town</span></span></h2>
+
+  <div class="premise">
+    <div>
+      <p class="lede rise">Two budding jazz musicians share a house not far from the college they attend on scholarship in a drab Navy town outside of Seattle. <em>A creative community is unwittingly ignited — adding color to the landscape &amp; a renaissance despite the gravity of a blue-collar world.</em></p>
+
+      <div class="stats rise">
+        <div><strong>22</strong><span>Scenes</span></div>
+        <div><strong>22</strong><span>Standards</span></div>
+        <div><strong>384</strong><span>Pages</span></div>
+        <div><strong>1</strong><span>Typewriter</span></div>
+      </div>
+    </div>
+
+    <div class="side rise">
+      <div class="prose cap">
+        <p>Spring of 2000, almost finals week at Olympic College, and the music department lounge is full of students before Jazz Band rehearsal — horns blowing faintly from the practice rooms down the hall. Around the oval table sits a cross-section of a town: kids fresh out of high school, and guys who used to be in the Navy band, back on the G.I. Bill.</p>
+        <p>One of them lives in a <b>1973 Volkswagen bus</b>, busks the Bainbridge ferry for a hundred and fifty a day, hosts the Wednesday open mic at a dive with crooked floors, and hauls a late-1940s Remington portable everywhere he goes. He is going to spend the next year turning a shipyard town into a scene.</p>
+        <p>The book is written entirely in dialogue — built to be <b>heard</b>. Every scene carries a tune. Play it in order and you have a record.</p>
+      </div>
+
+      <figure style="margin:34px 0 0">
+        <div class="pinned">
+          <span class="tape" style="top:-11px;left:16%;transform:rotate(-3deg)"></span>
+          <span class="tape" style="bottom:-9px;right:12%;transform:rotate(2.4deg)"></span>
+          <div class="plate raw"><img src="assets/cover.jpg" alt="Cover art: a Volkswagen bus, a typewriter, a black rooster and the Puget Sound"></div>
+        </div>
+        <figcaption>Sleeve art — the Wonderbus, the machine,<br>the rooster &amp; the sound.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ THE SETLIST ══════════════════ -->
+<section class="sec dark" id="s2">
+  <div class="eyebrow label"><span class="n">02</span><span>The Setlist</span><span class="line"></span><span>22 scenes · 22 tunes</span></div>
+
+  <div class="setlist-wrap">
+    <div>
+      <h2 class="h2 poster rise" style="margin-bottom:26px"><span class="mis"><span class="t">Every scene is a tune</span></span></h2>
+
+      <div class="acts" role="tablist" aria-label="Acts">
+        <button role="tab" id="tab-a" aria-selected="true" aria-controls="side-a" data-side="a">A-Side / Act I</button>
+        <button role="tab" id="tab-b" aria-selected="false" aria-controls="side-b" data-side="b">B-Side / Act II</button>
+      </div>
+
+      <div class="deck" id="deck">
+        <div class="side-a" id="side-a" role="tabpanel" aria-labelledby="tab-a"></div>
+        <div class="side-b" id="side-b" role="tabpanel" aria-labelledby="tab-b"></div>
+      </div>
+    </div>
+
+    <aside class="viewer" aria-hidden="true">
+      <div class="frame" id="frame">
+        <img data-k="bar" src="assets/opening-last.jpg" alt="" class="on">
+        <img data-k="rooster" src="assets/rooster-bw.jpg" alt="">
+        <img data-k="color" src="assets/rooster-color.jpg" alt="">
+        <img data-k="cover" src="assets/cover.jpg" alt="">
+        <img data-k="portrait" src="assets/portrait.jpg" alt="">
+        <img data-k="soup" src="assets/soup.jpg" alt="">
+        <img data-k="author" src="assets/author.jpg" alt="">
+      </div>
+      <div class="meta">
+        <span id="v-l">Act I · Scene 01</span>
+        <em id="v-r">So What</em>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<div class="ticker" aria-hidden="true">
+  <div class="run" id="run"></div>
+</div>
+
+<!-- ══════════════════ THE MACHINE ══════════════════ -->
+<section class="sec machine-sec" id="s3">
+  <div class="eyebrow label"><span class="n">03</span><span>The Machine</span><span class="line"></span><span>Remington portable, c. 1947</span></div>
+
+  <div class="machine-grid">
+    <div class="rise">
+      <div class="defn">
+        <span class="word">tingg<i>*</i></span>
+        <span class="pos">noun — the sound the carriage makes when it hits the margin.</span>
+        <p>Not a prop and not a metaphor. In this book the typewriter is cast, credited and played: it keeps time behind the poems, it goes on stage at the dive bar, and it gets its own name in the title.</p>
+      </div>
+      <blockquote>
+        I'm writing a bunch &amp; doing this crazy art thing using this typewriter I call the <em>tingg* Machine</em> as not only the esthetic of the project but also a central character.
+        <cite>Bub — Act I, Scene 5</cite>
+      </blockquote>
+      <blockquote>
+        Your typewriter seems to be its own character. — That's exactly it. I seem to take on another persona when my fingers are pounding away on that thing.
+        <cite>Dr. Hong &amp; Bub — Act II, Scene 5</cite>
+      </blockquote>
+    </div>
+
+
+    <div class="rig rise">
+      <div class="platen" aria-hidden="true"></div>
+      <div class="sheet" id="sheet" role="button" tabindex="0" aria-label="Typewriter. Type to strike keys.">
+        <div class="hint" id="hint">Type. It's loaded.</div>
+        <div class="out" id="out"><span class="caret" id="caret"></span></div>
+        <input class="keyin" id="keyin" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-hidden="true" tabindex="-1">
+      </div>
+      <div class="machine-bar">
+        <span class="pos">Col <em id="col">00</em> · Ln <em id="ln">01</em> <span class="bell" id="bellind">◆ BELL</span></span>
+        <span class="btns">
+          <button class="mbtn" id="btn-poem">Type me a poem</button>
+          <button class="mbtn" id="btn-clear">New sheet</button>
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ POEMS ══════════════════ -->
+<section class="sec paper" id="s4">
+  <span class="reg-mark" style="top:22px;right:calc(var(--rail) + 22px)"></span>
+  <div class="eyebrow label"><span class="n">04</span><span>Off the Page</span><span class="line"></span><span>Four poems, verbatim</span></div>
+  <h2 class="h2 poster rise" style="max-width:14ch"><span class="mis"><span class="t">Everything is poetry</span></span></h2>
+  <p class="prose rise" style="margin-top:22px;max-width:52ch">"Every lick, every arpeggio, every space, every color, &amp; texture… Everything." — T.J., Act II, Scene 2</p>
+
+  <div class="poems">
+    <article class="poem rise">
+      <img class="stamp" src="assets/emblem.jpg" alt="" aria-hidden="true">
+      <h3>Bebop Coffee Shop</h3><span class="src">Act I · Scene 1 · the first book</span>
+      <pre>Cascading cups of caffeinated concentrate
+drip dela drip, creme dela creme
+packed tight port-a-filter
+handy shots to shoot it down
+round wound and up we go
+free to flow, this juice in my veins
+Sammy Hagar high, can't cry when it rains
+with bebop jazz and espresso addictions
+— leaving little turd colored cakes.</pre>
+    </article>
+
+    <article class="poem rise">
+      <h3>Ray Brown Blues</h3><span class="src">Act I · Scene 3 · for the new bass player</span>
+      <pre>Tighten up those base lines
+I feel fine
+Ears sweet like the fifth glass of wine
+Slappin' &amp; poppin' — shakin' up the love
+   in your jazz skillet
+Tappin' on those tapping keys
+It's not me – she's… left speechless
+After the bow solo
+SO— LOW
+oh – Ray Brown Blues</pre>
+    </article>
+
+    <article class="poem rise">
+      <h3>Grosso's Blues</h3><span class="src">Act II · Scene 2 · read while the FBI clears out</span>
+      <pre>Wanna stick my head in the middle of that horn circle
+clock time telling one to drink coffee &amp; Stay, up, late—
+after you've done everything you can think of to do
+you go to bed but can't sleep
+'Cause of all the caffeine runnin'
+'Round your veins
+Keepin' your lids locked open
+to run with Wiley Coyotes in the desert
+covered with checkerboard chairs
+inviting one to sit with trinkets &amp; things that sparkle—
+                                        […]
+Here, it all comes back to the list of fabulous people
+"Well, who's on the list?"
+"These fabulous people."</pre>
+    </article>
+
+    <article class="poem rise">
+      <h3>Lament for Joy</h3><span class="src">Act II · Scene 10 · the last page</span>
+      <pre>It feels like my boat sank and I had to abandon ship
+swim to shore, dance barefoot up the beach
+over barnacled rocks
+to stand shivering wet
+at the steps of a bougie waterfront house
+knocking on the back door
+praying for the kindness of strangers</pre>
+    </article>
+  </div>
+</section>
+
+<!-- ══════════════════ CAST ══════════════════ -->
+<section class="sec dark" id="s5">
+  <div class="eyebrow label"><span class="n">05</span><span>The Company</span><span class="line"></span><span>Selected</span></div>
+  <h2 class="h2 poster rise" style="margin-bottom:34px;max-width:16ch"><span class="mis"><span class="t">You play with the band you have</span></span></h2>
+  <ul class="cast" id="cast"></ul>
+  <button class="more" id="more" aria-expanded="false" aria-controls="cast">Show the rest of the company</button>
+</section>
+
+<!-- ══════════════════ LISTEN / AUTHOR ══════════════════ -->
+<section class="sec paper" id="s6">
+  <div class="eyebrow label"><span class="n">06</span><span>The Author</span><span class="line"></span><span>Bub Pratt</span></div>
+
+  <div class="two">
+    <div class="author-plate rise">
+      <div class="plate ink"><img src="assets/author.jpg" alt="Bub Pratt seated at the Remington portable typewriter"></div>
+      <span class="cap">Bub &amp; the tingg* Machine</span>
+    </div>
+
+    <div class="bio rise">
+      <p>Poet, guitar player, ferry busker, open-mic host, and for one particular year, the guy who lived in a Volkswagen bus and carried a typewriter into every room he entered.</p>
+      <p>Bub self-published three hand-made books in the span of the story you're about to hear — cut with scissors and a glue stick, set in the font of a late-forties Remington, sold for five bucks a copy on the Seattle–Bainbridge run. He fronted a band called <b>Spoken Jazz</b>, playing the typewriter, and made a room full of drinkers in a crooked-floored dive go so quiet you could hear a pin drop.</p>
+
+      <ul class="books">
+        <li><b>Bebop Coffeeshop</b><span>Book One</span></li>
+        <li><b>The Fabulous Adventures of Yours Truly</b><span>Book Two</span></li>
+        <li><b>Spoken Jazz &amp; the tingg<span class="ast">*</span> Machine</b><span>Book Three</span></li>
+      </ul>
+
+      <a class="cta" href="https://soundcloud.com/bub-nda-smack-dab/lament-for-joy" target="_blank" rel="noopener">
+        <span>Hear "Lament for Joy"</span><span class="arr">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ BUY ══════════════════ -->
+<section class="sec buy" id="s7">
+  <div class="eyebrow label"><span class="n">07</span><span>Get the Book</span><span class="line"></span><span>Out now</span></div>
+
+  <div class="buy-grid">
+    <div class="buy-art rise">
+      <img src="assets/cover.jpg" alt="Cover of Spoken Jazz &amp; the tingg* Machine by Bub Pratt">
+    </div>
+
+    <div class="rise">
+      <h2 class="poster">Read it.<br>Then hear it.</h2>
+      <p class="sell">Twenty-two scenes, twenty-two standards, and one shipyard town that had no idea what was about to happen to it. Available now on Kindle.</p>
+
+      <div class="formats">
+        <div><b>Kindle</b><span>Ebook</span></div>
+        <div><b>384 pp.</b><span>Two acts</span></div>
+        <div><b>Dialogue</b><span>Built to be heard</span></div>
+      </div>
+
+      <a class="buy-cta" href="https://www.amazon.com/Spoken-Jazz-Tingg-Machine-episodic-ebook/dp/B0H37R6NS3" target="_blank" rel="noopener">
+        <span>Buy on Amazon</span><span class="arr">→</span>
+      </a>
+      <p class="fine">Opens amazon.com in a new tab</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ COLOPHON ══════════════════ -->
+<footer class="colophon">
+  <div class="memoriam">
+    <img src="assets/emblem.jpg" alt="" aria-hidden="true">
+    <p>In loving memory of William Lawson</p>
+    <small>Bill · who had the underground bar in his townhouse flat</small>
+  </div>
+
+  <div class="colo-grid">
+    <div><strong>Spoken Jazz &amp; the tingg* Machine</strong>An epicsodic jazz audio musical<br>Two acts · Twenty-two scenes</div>
+    <div><strong>Written by</strong>Bub Pratt<br>Kitsap County, Washington</div>
+    <div><strong>Set in</strong>Bremerton · Silverdale · Manette<br>Kingston · Poulsbo · Bainbridge</div>
+    <div><strong>Printed</strong>Two inks, out of register<br>on the machine itself</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+"use strict";
+var RM = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ─────────────────────────────────────────────────────────────
+   INK PLATES — clone each heading twice so the pink and blue
+   impressions carry the same markup (and therefore the same
+   metrics) as the black one. Then slide them into register.
+   ───────────────────────────────────────────────────────────── */
+document.querySelectorAll(".mis").forEach(function(el){
+  var t = el.querySelector(".t"); if(!t) return;
+  ["g2","g1"].forEach(function(cls){
+    var c = t.cloneNode(true);
+    c.className = "g " + cls;
+    c.setAttribute("aria-hidden","true");
+    el.insertBefore(c, el.firstChild);
+  });
+});
+
+/* ─────────────────────────────────────────────────────────────
+   DATA — every scene, its tune, and what happens in it.
+   ───────────────────────────────────────────────────────────── */
+var ACT1 = [
+ {n:"01",t:"Bebop Coffeeshop",tune:"So What",k:"soup",
+  note:"Spring 2000, the music-department lounge. Somebody's changing strings, somebody's resting their chops, and a stack of hand-made poetry books lands in the middle of the oval table.",
+  s:[["Gwen","You know it's rough when Bub's the best soloist in the band."],["Bub","She's right. You play with the band you have, not the band you wish you had."],["i","(He drops a handful of hand-bound booklets on the table.)"],["Kevin","Looks like you used an old typewriter for the font."],["Bub","It's an old Remington portable from the late 40's. I used a glue stick &amp; scissors for the rest."]]},
+ {n:"02",t:"Open Mic at the Old Town Tavern",tune:"Lemons",k:"bar",
+  note:"Wednesday night at a dive with crooked floors. Fred the owner — a Vegas crooner in the sixties — donates the spinet piano his wife never learned to play.",
+  s:[["Fred","Can I buy you a beer?"],["Bub","Thanks man, Julie knows what I like."],["Julie","It's just a double vodka, Redbull with a lime."],["Bub","See how it looks like neon piss? So, I present to you the Pizneon Green."],["Fred","You're a funny guy Bub."]]},
+ {n:"03",t:"Jazz Choir Mini Tour",tune:"Softly as in a Morning Sunrise",k:"portrait",
+  note:"7am, early June. The choir's last recruiting run of the year, and Bub has had about two hours of sleep. He stands up between high schools and recites a poem for the new bass player."},
+ {n:"04",t:"Waking Up in Ellensburg",tune:"It's All Right with Me",k:"portrait",
+  note:"A tour stop on the dry side of the Cascades. Morning arrives uninvited, and the tune is already going."},
+ {n:"05",t:"Working Trees",tune:"Nature Boy",k:"color",
+  note:"Kingston. Over coffee and a hand-rolled cigarette, Bub meets Bruce — hippie, boatman, and a living remnant of his own parents' 1970s.",
+  s:[["Bruce","So, what are you doing with this typewriter anyway?"],["Bub","I'm doing this crazy art thing using this typewriter I call the tingg* Machine as not only the esthetic of the project but also a central character."],["Bruce","Sooo, you're a poet?"],["Bub","A poet &amp; a Jazz musician."],["Bruce","Good combination. Improvisation is the key to Jazz &amp; life."]]},
+ {n:"06",t:"The Fabulous Adventures of Yours Truly",tune:"Take Five",k:"cover",
+  note:"An overcast summer day; the Puget Sound smelling of low tide. A clinic run, a break-up on the drive back, and a forty-foot wooden cabin cruiser to move onto."},
+ {n:"07",t:"Rap Is Easy!",tune:"Rap Song",k:"soup",
+  note:"Two weeks before fall semester, a mob outside the registration building, and a line worth standing in."},
+ {n:"08",t:"Bus Life &amp; the Couch Surf",tune:"Gypsy in My Soul",k:"cover",
+  note:"Waking up on the bench seat of the Wonderbus with your breath showing. Practice room, gym showers, repeat — and a locker-room debate about who counts as a student."},
+ {n:"09",t:"First Jam on Scott Street",tune:"Mr. P.C.",k:"portrait",
+  note:"Marshal moves into a funky little place in Manette. There's a piano, a couple of small amps, and the cutest drum kit you've ever seen. The scene starts here.",
+  s:[["Bub","Just take a left after you pass the Manette Saloon &amp; find a spot to park, you can't miss it."],["Rick","That's the kinda shit that makes everything we're doing here REAL."],["Marshal","You wanna come over Rick?"],["Rick","I can't. I've got papers to grade, a dog to walk &amp; a woman to take care of."]]},
+ {n:"10",t:"The Birth of Neck Gash",tune:"Give It Away Now",k:"rooster",
+  note:"A recording studio hidden in the woods on Bainbridge Island. Between vocal takes, a band gets named."},
+ {n:"11",t:"Black Cock Roll Call",tune:"Mr. P.C.",k:"rooster",
+  note:"Saturday, one in the afternoon: a pizza in one hand, a guitar in the other, and dried maple leaves all over the yard. The Fraternal Order convenes and everybody has to have a verse ready."},
+ {n:"12",t:"Missed Bus to Ellensburg",tune:"Rhythm Changes Medley",k:"bar",
+  note:"Three in the morning, a pink fluffy bathrobe, a cop's headlights, and a guitar case that survived a car doing cartwheels in a ditch."}
+];
+var ACT2 = [
+ {n:"01",t:"The Grotto of Rat City",tune:"Devil May Care",k:"bar",
+  note:"March. Poppa T's pellet stove, the morning news, and the most comfortable couch in the world. Later: a typewriter carried across a dim room and set on an end table, typing in time with the music.",
+  s:[["Tina","I've never seen anyone use a typewriter before."],["Bub","Doesn't it sound cool? I've been trying to type in time with the music."],["Tina","Think that's one reason it hasn't been annoying anyone."],["Bub","I just put together a band called Spoken Jazz where I play the typewriter."],["Tina","What kind of band has a typewriter in it?"],["Bub","An avant garde jazz band does."]]},
+ {n:"02",t:"Spoken Jazz &amp; the tingg<span class='ast'>*</span> Machine",tune:"Stupid Gullible Me",k:"bar",
+  note:"Mushroom tea on an empty stomach. A second set walked out on, a good cry on the warm hood of somebody's car, a poem read to pass the time — and the FBI less than a block away.",
+  s:[["TJ","That last 20 minutes you were with us were crazy. It was like I was on mushrooms by proximity."],["Rick","Everyone was in such shock &amp; awe you could hear a pin drop."],["Rick","This spoken word thing could be your hot ticket Bub. It's crazy how good you are at it while remembering to be so musical at the same time."],["i","(Later, on the step, waiting out the flashing lights.)"],["Drunk guy","Nothing kills a vibe like the FBI. See, I'm a poet too."]]},
+ {n:"03",t:"Return to Disneyland",tune:"Have You Met Miss Jones",k:"soup",
+  note:"Another jam at the house on Scott, and the age-old conversation: what do we play next, and why does Rick hate that song?"},
+ {n:"04",t:"House Mates",tune:"My Foolish Heart",k:"portrait",
+  note:"Tuesday evening on Scott Street. Two musicians decide to share a house. \"It's possibly bigger than we can imagine.\""},
+ {n:"05",t:"Jumping Off the Manette",tune:"Butterfly Song",k:"color",
+  note:"Second week of school: a longboard, a practice room claimed by right of occupancy, and a leap off the Manette Bridge in front of a hundred people on a patio."},
+ {n:"06",t:"National Insecurity Day",tune:"Fires &amp; Floods",k:"rooster",
+  note:"An eccentric book critic next door, a crazy lap-steel player, and a new national holiday nobody asked for."},
+ {n:"07",t:"Mary Moves Across the Manette",tune:"A Child Is Born",k:"author",
+  note:"A movable feast, a walk to the sunset, and a life quietly starting to take a shape nobody planned."},
+ {n:"08",t:"Blunt Brothers",tune:"Nardis",k:"soup",
+  note:"Nine in the morning in the practice room. Coltrane got it from Miles; Miles probably got it from Bill Evans. Somebody has to actually learn it.",
+  s:[["Bub","Man, I blew chunks all over Resolution. Thought I had it down better than that."],["Jonny","It's not an easy song."],["Bub","No, it's not but I love it."],["Jonny","Do you know where Coltrane got the idea for that song?"]]},
+ {n:"09",t:"Fun's Fun Till…",tune:"It Don't Mean a Thing",k:"color",
+  note:"After midnight, the neighbours, the boxing gloves, and the cops again. The part of the night where the party decides what it is."},
+ {n:"10",t:"Everyone's Expecting",tune:"Lament for Joy",k:"author",
+  note:"The last scene. A phone call, a conversation in the band director's office, and a poem written walking home.",
+  s:[["Rick","They asked me what I could show them as an example of the effectiveness of my teaching &amp; the impact I've made."],["Bub","What did you tell them?"],["Rick","I told them, \"That's easy, look at Bub.\""],["i","(Walking home, singing.)"],["Bub","Funny how best times never realized till you grow further from the past."]]}
+];
+
+var CAST = [
+ {n:"The tingg<span class='ast'>*</span> Machine",d:"A Remington portable, late 1940s. Typed everything out. Not a prop — a character.",star:1},
+ {n:"Bub",d:"Guitar player in the Jazz Choir &amp; later the Jazz Band. A poet who doesn't follow the rules but lives by his own moral code."},
+ {n:"Rick",d:"New band director &amp; music theory instructor. A virtuosic six-string electric bass player. The reason any of it happened."},
+ {n:"Marshal",d:"Bass player. Housemate on Scott Street. Ornery until the sun comes up."},
+ {n:"T.J.",d:"Rippin' piano player, drafted by Theresa into the Jazz Choir rhythm section. Believes everything is poetry."},
+ {n:"Theresa",d:"Choir director. Keeps trying to get Bub in bed."},
+ {n:"Kareem Kandi",d:"Ripping sax player, on to bigger &amp; better things. Camps out in the practice rooms all day, because that's what you do if you wanna get good."},
+ {n:"Kevin",d:"Lead trumpet player on the G.I. Bill. Old enough to know better."},
+ {n:"Gwen",d:"Hot blonde sax player. Super chill &amp; real AF."},
+ {n:"Andrew",d:"Bass player studying conducting, filling gaps in his transcript before USC. Thinks the town looks like the Twilight Zone crossed with Mayberry."},
+ {n:"Bill Lawson",d:"Had the underground bar in his townhouse flat by the dive. Bub's dear brother since he was a mall rat."},
+ {n:"Sydney",d:"Bill's girlfriend. Sings 'Lemons' at an open mic. A professional D.J."},
+ {n:"Poppa T",d:"Marshal &amp; Harley's dad. Former Marine in Vietnam. Runs the upholstery shop out of the garage."},
+ {n:"Harley",d:"Marshal's drumming brother. Never forgets when someone's dancing while he's playing."},
+ {n:"Fred",d:"Jovial fat man who owns the Old Town Tavern &amp; was a Vegas crooner in the 60's &amp; 70's."},
+ {n:"Julie",d:"Bartender at the Old Town. The reason Wednesdays work — and she'll tell you you're the reason she works them."},
+ {n:"Sabir",d:"Russian foreign exchange student. His licence says Chon, because the clerks in Moscow misspelled it on purpose."},
+ {n:"Jim",d:"Mechanic above the tavern. Bub's Jesus Cristo de Volkswagen — an engine whisperer with a dark secret."},
+ {n:"Earl",d:"Bus driver for all the band trips. A working man's hero &amp; a sage. Doesn't love anyone before the sun rises."},
+ {n:"Dr. Hong",d:"Teaches music history &amp; appreciation. Makes documentaries about artists in his community, because how can we have music history if no one documents it?"},
+ {n:"Bruce",d:"Boat hippie, notorious Kingston tramp. Built a chainsaw out of a Volkswagen engine. Undefeated in the saw race."},
+ {n:"Mary",d:"Quiet. Smokes Marlboro Lights. Slips out of social functions without saying goodbye. Becomes the mother of Bub's children."},
+ {n:"Seth Littlefield",d:"Badass drummer, back in Bremerton after Central, saving up to move to Seattle."},
+ {n:"KW",d:"Americana singer/songwriter &amp; blues man. Gravelly voice, hand-rolled cigarettes, usually lives in a van."}
+];
+
+var POEMS = [
+"Cascading cups of caffeinated concentrate\ndrip dela drip, creme dela creme\npacked tight port-a-filter\nhandy shots to shoot it down\nround wound and up we go\nfree to flow, this juice in my veins\nSammy Hagar high, can't cry when it rains\nwith bebop jazz and espresso addictions\n- leaving little turd colored cakes.\n",
+"It feels like my boat sank and I had to abandon ship\nswim to shore, dance barefoot up the beach\nover barnacled rocks\nto stand shivering wet\nat the steps of a bougie waterfront house\nknocking on the back door\npraying for the kindness of strangers\n",
+"Tighten up those base lines\nI feel fine\nEars sweet like the fifth glass of wine\nSlappin' & poppin' - shakin' up the love\nin your jazz skillet\nTappin' on those tapping keys\nIt's not me - she's... left speechless\nAfter the bow solo\nSO- LOW\noh - Ray Brown Blues\n"
+];
+
+/* ─────────────────────────────────────────────────────────────
+   COLD OPEN — video settles onto its last frame
+   ───────────────────────────────────────────────────────────── */
+var reel = document.getElementById("s0"), film = document.getElementById("film");
+function settle(){ reel.classList.add("settled"); }
+if(film){
+  film.addEventListener("ended", settle);
+  film.addEventListener("error", settle);
+  var p = film.play && film.play();
+  if(p && p.catch) p.catch(settle);          // autoplay blocked → show the still
+  if(RM){ film.pause(); settle(); }
+  setTimeout(function(){ if(!reel.classList.contains("settled") && (film.paused||film.readyState<2)) settle(); }, 1400);
+}
+setTimeout(function(){
+  document.querySelectorAll("#s0 .mis").forEach(function(el,i){
+    setTimeout(function(){ el.classList.add("reg"); }, i*220);
+  });
+}, 260);
+
+/* ─────────────────────────────────────────────────────────────
+   SOUND — the machine, synthesised. Nothing plays until asked.
+   ───────────────────────────────────────────────────────────── */
+var AC = window.AudioContext || window.webkitAudioContext, ctx=null, bus=null, soundOn=false;
+function boot(){
+  if(ctx||!AC) return;
+  ctx = new AC(); bus = ctx.createGain(); bus.gain.value=.4; bus.connect(ctx.destination);
+}
+function noise(dur){
+  var n=Math.floor(ctx.sampleRate*dur), b=ctx.createBuffer(1,n,ctx.sampleRate), d=b.getChannelData(0);
+  for(var i=0;i<n;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/n,2.4);
+  var s=ctx.createBufferSource(); s.buffer=b; return s;
+}
+function strike(){
+  if(!soundOn||!ctx) return;
+  var t=ctx.currentTime;
+  var s=noise(.055), f=ctx.createBiquadFilter(), g=ctx.createGain();
+  f.type="bandpass"; f.frequency.value=1500+Math.random()*900; f.Q.value=1.1;
+  g.gain.setValueAtTime(.5,t); g.gain.exponentialRampToValueAtTime(.001,t+.055);
+  s.connect(f); f.connect(g); g.connect(bus); s.start(t); s.stop(t+.06);
+  var o=ctx.createOscillator(), og=ctx.createGain();
+  o.type="triangle"; o.frequency.setValueAtTime(150+Math.random()*40,t);
+  og.gain.setValueAtTime(.22,t); og.gain.exponentialRampToValueAtTime(.001,t+.05);
+  o.connect(og); og.connect(bus); o.start(t); o.stop(t+.06);
+}
+function bell(){
+  if(!soundOn||!ctx) return;
+  var t=ctx.currentTime;
+  [2090,3140].forEach(function(fr,i){
+    var o=ctx.createOscillator(), g=ctx.createGain();
+    o.type="sine"; o.frequency.value=fr;
+    g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(i?.06:.13,t+.004);
+    g.gain.exponentialRampToValueAtTime(.0008,t+1.1);
+    o.connect(g); g.connect(bus); o.start(t); o.stop(t+1.15);
+  });
+}
+function carriage(){
+  if(!soundOn||!ctx) return;
+  var t=ctx.currentTime, s=noise(.17), f=ctx.createBiquadFilter(), g=ctx.createGain();
+  f.type="bandpass"; f.Q.value=3.2;
+  f.frequency.setValueAtTime(700,t); f.frequency.exponentialRampToValueAtTime(2600,t+.15);
+  g.gain.setValueAtTime(.3,t); g.gain.exponentialRampToValueAtTime(.001,t+.17);
+  s.connect(f); f.connect(g); g.connect(bus); s.start(t); s.stop(t+.18);
+}
+var sndBtn=document.getElementById("snd");
+sndBtn.addEventListener("click", function(){
+  boot(); if(ctx && ctx.state==="suspended") ctx.resume();
+  soundOn=!soundOn;
+  sndBtn.classList.toggle("live",soundOn);
+  sndBtn.setAttribute("aria-pressed",String(soundOn));
+  sndBtn.innerHTML = soundOn ? "SND<br>ON" : "SND<br>OFF";
+  if(soundOn) bell();
+});
+
+/* ─────────────────────────────────────────────────────────────
+   THE PLATEN RAIL
+   ───────────────────────────────────────────────────────────── */
+var SECS=[["s0","Cold Open"],["s1","The Premise"],["s2","The Setlist"],["s3","The Machine"],
+          ["s4","Off the Page"],["s5","The Company"],["s6","The Author"],["s7","Get the Book"]];
+var stops=document.getElementById("stops"), scale=document.getElementById("scale"),
+    carr=document.getElementById("carriage"), pageno=document.getElementById("pageno"),
+    rail=document.getElementById("rail"), mprog=document.getElementById("mprog");
+
+SECS.forEach(function(s,i){
+  var li=document.createElement("li");
+  li.style.top = (7 + i*(86/(SECS.length-1))) + "%";
+  li.innerHTML = '<button data-go="'+s[0]+'"><em>'+s[1]+'</em><i>'+String(i).padStart(2,"0")+'</i></button>';
+  stops.appendChild(li);
+});
+stops.addEventListener("click", function(e){
+  var b=e.target.closest("button"); if(!b) return;
+  var el=document.getElementById(b.dataset.go);
+  el.scrollIntoView({behavior:RM?"auto":"smooth",block:"start"});
+});
+
+var lis=[].slice.call(stops.children), ticking=false;
+function frame(){
+  ticking=false;
+  var h=document.documentElement.scrollHeight-window.innerHeight;
+  var f=h>0 ? Math.min(1,Math.max(0,window.scrollY/h)) : 0;
+  carr.style.top=(7+f*86)+"%";
+  if(mprog) mprog.style.width=(f*100)+"%";
+  pageno.textContent="PP "+String(Math.max(1,Math.round(f*384))).padStart(3,"0");
+
+  // which section owns the viewport middle
+  var mid=window.scrollY+window.innerHeight*.42, cur=0;
+  SECS.forEach(function(s,i){ var el=document.getElementById(s[0]); if(el && el.offsetTop<=mid) cur=i; });
+  lis.forEach(function(li,i){ li.classList.toggle("here",i===cur); });
+
+  // rail flips ink when it sits over paper
+  var over=document.elementFromPoint(window.innerWidth-30, window.innerHeight/2);
+  var onPaper=!!(over && over.closest && over.closest(".paper"));
+  rail.classList.toggle("on-paper",onPaper);
+}
+function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(frame); } }
+window.addEventListener("scroll",onScroll,{passive:true});
+window.addEventListener("resize",onScroll);
+frame();
+
+// drag the carriage to scrub
+var dragging=false;
+function scrub(e){
+  var r=scale.getBoundingClientRect();
+  var f=Math.min(1,Math.max(0,((e.clientY-r.top)/r.height - .07)/.86));
+  window.scrollTo(0,f*(document.documentElement.scrollHeight-window.innerHeight));
+}
+scale.addEventListener("pointerdown",function(e){
+  if(e.target.closest("button")) return;
+  dragging=true; scale.setPointerCapture(e.pointerId); scrub(e);
+});
+scale.addEventListener("pointermove",function(e){ if(dragging) scrub(e); });
+scale.addEventListener("pointerup",function(){ dragging=false; });
+scale.addEventListener("pointercancel",function(){ dragging=false; });
+
+/* ─────────────────────────────────────────────────────────────
+   SETLIST
+   ───────────────────────────────────────────────────────────── */
+var frameEl=document.getElementById("frame"), vL=document.getElementById("v-l"), vR=document.getElementById("v-r");
+function showPlate(k){
+  [].forEach.call(frameEl.children,function(img){ img.classList.toggle("on", img.dataset.k===k); });
+}
+function scriptHTML(lines){
+  return lines.map(function(l){
+    if(l[0]==="i") return '<i>'+l[1]+'</i>';
+    return '<span class="v"><b>'+l[0]+'—</b> '+l[1]+'</span>';
+  }).join("");
+}
+function build(list, host, actLabel){
+  list.forEach(function(sc){
+    var row=document.createElement("div"); row.className="row";
+    row.innerHTML =
+      '<button aria-expanded="false"><span class="num">'+sc.n+'</span>'+
+      '<span class="name">'+sc.t+'</span>'+
+      '<span class="tune">'+sc.tune+'</span></button>'+
+      '<div class="drawer"><div class="drawer-in">'+
+        '<p class="note">'+sc.note+'</p>'+
+        (sc.s ? '<div class="script">'+scriptHTML(sc.s)+'</div>' : '')+
+      '</div></div>';
+    var btn=row.querySelector("button"), dr=row.querySelector(".drawer");
+    btn.addEventListener("mouseenter",function(){
+      showPlate(sc.k); vL.textContent=actLabel+" · Scene "+sc.n;
+      vR.innerHTML=sc.tune;
+    });
+    btn.addEventListener("click",function(){
+      var open=row.classList.toggle("open");
+      btn.setAttribute("aria-expanded",String(open));
+      dr.style.height = open ? dr.firstElementChild.offsetHeight+"px" : "0px";
+      if(open){ carriage(); }
+    });
+    host.appendChild(row);
+  });
+}
+build(ACT1, document.getElementById("side-a"), "Act I");
+build(ACT2, document.getElementById("side-b"), "Act II");
+
+var deck=document.getElementById("deck");
+[].forEach.call(document.querySelectorAll(".acts button"),function(b){
+  b.addEventListener("click",function(){
+    var isB = b.dataset.side==="b";
+    deck.classList.toggle("flipped",isB);
+    document.getElementById("tab-a").setAttribute("aria-selected",String(!isB));
+    document.getElementById("tab-b").setAttribute("aria-selected",String(isB));
+    carriage();
+  });
+});
+
+/* ticker of tunes */
+var tunes = ACT1.concat(ACT2).map(function(s){ return s.tune; });
+var runHTML = tunes.map(function(t){ return "<span>"+t+"</span>"; }).join("");
+document.getElementById("run").innerHTML = runHTML + runHTML;
+
+/* cast */
+var castEl=document.getElementById("cast");
+CAST.forEach(function(c){
+  var li=document.createElement("li");
+  if(c.star) li.className="star";
+  li.innerHTML="<h4>"+c.n+"</h4><p>"+c.d+"</p>";
+  castEl.appendChild(li);
+});
+var moreBtn=document.getElementById("more");
+moreBtn.addEventListener("click",function(){
+  var all=castEl.classList.toggle("all");
+  moreBtn.setAttribute("aria-expanded",String(all));
+  moreBtn.textContent = all ? "Show fewer" : "Show the rest of the company";
+  if(!all) document.getElementById("s5").scrollIntoView({behavior:RM?"auto":"smooth",block:"start"});
+});
+
+/* ─────────────────────────────────────────────────────────────
+   THE MACHINE
+   ───────────────────────────────────────────────────────────── */
+var sheet=document.getElementById("sheet"), out=document.getElementById("out"),
+    caret=document.getElementById("caret"), keyin=document.getElementById("keyin"),
+    colEl=document.getElementById("col"), lnEl=document.getElementById("ln"),
+    bellInd=document.getElementById("bellind");
+var COLS=58, col=0, ln=1, live=false, autoTimer=null, touched=false;
+
+/* The right margin is wherever the sheet actually ends, so measure the
+   ribbon's character width rather than assuming a column count. */
+function measureCols(){
+  var probe=document.createElement("span");
+  probe.className="ch"; probe.style.visibility="hidden"; probe.textContent="0000000000";
+  out.appendChild(probe);
+  var w=probe.getBoundingClientRect().width/10;
+  probe.remove();
+  if(w>0) COLS=Math.max(22,Math.floor(out.clientWidth/w));
+}
+
+function put(chr){
+  if(chr==="\n"){
+    var br=document.createElement("br"); br.className="nl";
+    out.insertBefore(br,caret); col=0; ln++; carriage();
+  }else{
+    var s=document.createElement("span"); s.className="ch"; s.textContent=chr;
+    s.style.transform="rotate("+(Math.random()*1.6-.8).toFixed(2)+"deg) translateY("+(Math.random()*1.2-.6).toFixed(2)+"px)";
+    s.style.opacity=(.74+Math.random()*.26).toFixed(2);
+    out.insertBefore(s,caret);
+    if(chr!==" ") strike(); else strike();
+    col++;
+    if(col===COLS-6){ bell(); bellInd.classList.add("ring"); setTimeout(function(){bellInd.classList.remove("ring");},900); }
+    if(col>=COLS){ put("\n"); }
+  }
+  sheet.classList.add("dirty");
+  colEl.textContent=String(col).padStart(2,"0");
+  lnEl.textContent=String(ln).padStart(2,"0");
+}
+function back(){
+  var prev=caret.previousElementSibling;
+  if(!prev) return;
+  if(prev.tagName==="BR"){ ln=Math.max(1,ln-1); col=COLS; } else { col=Math.max(0,col-1); }
+  prev.remove();
+  colEl.textContent=String(col).padStart(2,"0"); lnEl.textContent=String(ln).padStart(2,"0");
+}
+function clearSheet(){
+  [].slice.call(out.querySelectorAll(".ch,.nl")).forEach(function(n){n.remove();});
+  col=0; ln=1; sheet.classList.remove("dirty");
+  colEl.textContent="00"; lnEl.textContent="01"; carriage();
+}
+function autoType(text, done){
+  if(autoTimer){ clearInterval(autoTimer); autoTimer=null; }
+  var i=0;
+  autoTimer=setInterval(function(){
+    if(i>=text.length){ clearInterval(autoTimer); autoTimer=null; if(done)done(); return; }
+    put(text[i++]);
+  }, RM?8:46);
+}
+function stopAuto(){ if(autoTimer){ clearInterval(autoTimer); autoTimer=null; } }
+
+sheet.addEventListener("click",function(){ keyin.focus({preventScroll:true}); touched=true; stopAuto(); });
+sheet.addEventListener("keydown",function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); keyin.focus({preventScroll:true}); } });
+keyin.addEventListener("input",function(){
+  var v=keyin.value; keyin.value="";
+  for(var i=0;i<v.length;i++) put(v[i]);
+});
+
+window.addEventListener("keydown",function(e){
+  if(!live) return;
+  var t=e.target;
+  if(t && (t.tagName==="INPUT"&&t!==keyin || t.tagName==="TEXTAREA" || t.isContentEditable)) return;
+  if(e.metaKey||e.ctrlKey||e.altKey) return;
+  if(e.key==="Backspace"){ e.preventDefault(); stopAuto(); touched=true; back(); return; }
+  if(e.key==="Enter"){ e.preventDefault(); stopAuto(); touched=true; put("\n"); return; }
+  if(e.key.length===1){ e.preventDefault(); stopAuto(); touched=true; put(e.key); }
+});
+
+document.getElementById("btn-poem").addEventListener("click",function(){
+  clearSheet(); touched=true;
+  autoType(POEMS[Math.floor(Math.random()*POEMS.length)]);
+});
+document.getElementById("btn-clear").addEventListener("click",function(){ stopAuto(); clearSheet(); });
+
+/* The machine goes live when the rig itself is on screen — not the section,
+   which is taller than most viewports and never clears a ratio threshold.
+   If nobody has typed, it types a poem by itself. */
+var mObs=new IntersectionObserver(function(es){
+  es.forEach(function(en){
+    live = en.isIntersecting && en.intersectionRatio>.3;
+    if(live && !touched && !autoTimer){
+      setTimeout(function(){
+        if(live && !touched && !autoTimer && !sheet.classList.contains("dirty")) autoType(POEMS[0]);
+      }, 1800);
+    }
+    if(!live) stopAuto();
+  });
+},{threshold:[0,.3,.6]});
+mObs.observe(document.querySelector(".rig"));
+
+/* ─────────────────────────────────────────────────────────────
+   reveals
+   ───────────────────────────────────────────────────────────── */
+var rObs=new IntersectionObserver(function(es){
+  es.forEach(function(en){
+    if(!en.isIntersecting) return;
+    en.target.classList.add("in");
+    en.target.querySelectorAll(".mis").forEach(function(m,i){
+      setTimeout(function(){ m.classList.add("reg"); }, 120+i*140);
+    });
+    rObs.unobserve(en.target);
+  });
+},{threshold:.16,rootMargin:"0px 0px -8% 0px"});
+document.querySelectorAll(".rise").forEach(function(el){ rObs.observe(el); });
+
+/* number keys jump; ? for the legend */
+window.addEventListener("keydown",function(e){
+  if(live) return;
+  var t=e.target; if(t&&(t.tagName==="INPUT"||t.tagName==="TEXTAREA")) return;
+  if(e.key>="0"&&e.key<="7"){
+    var s=SECS[+e.key]; if(s) document.getElementById(s[0]).scrollIntoView({behavior:RM?"auto":"smooth"});
+  }
+  if(e.key==="s"||e.key==="S") sndBtn.click();
+});
+
+measureCols();
+
+/* keep the margin and any open drawers correct when the page reflows */
+window.addEventListener("resize",function(){
+  measureCols();
+  document.querySelectorAll(".row.open .drawer").forEach(function(d){
+    d.style.height=d.firstElementChild.offsetHeight+"px";
+  });
+});
+})();
+</script>
+
+</body>
+</html>
