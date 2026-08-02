@@ -336,69 +336,77 @@ a{color:inherit}
    Both acts ride one ten-faced cylinder turning on a single axle:
    Act I on face 0, Act II on face 5, eight blank shell segments
    between them. Flipping sides is a half turn, so Act I genuinely
-   rolls away to the back while Act II comes up from below — no
-   emptied-out block left behind in the layout.
-   The window is as tall as whichever side is facing front, and
-   nothing else, which is what closes the dead gap.
-   Deliberately no perspective: rows compress vertically as they
+   rolls away to the back while Act II comes round from the other
+   side — no emptied-out block left behind in the layout.
+   The axle stands upright, so the turn is horizontal: Act I sweeps
+   off to the right, Act II arrives from the left. That makes the
+   radius a function of the face WIDTH (--dr, measured in script),
+   while the height (--fh) only ever tracks the side facing front,
+   which is what closes the dead gap.
+   Deliberately no perspective: faces compress horizontally as they
    turn, like the innards of a tape deck, with no trapezoid skew. */
 @property --fh{syntax:"<length>";inherits:true;initial-value:520px}
 
 .deck{position:relative}
 .drum-window{
   --fh:520px;
-  position:relative;height:var(--fh);overflow:hidden;
+  --dr:600px;              /* cylinder radius = face width x 1.5388 */
+  --rail:18px;             /* bearing plate at each end of the axle */
+  position:relative;height:calc(var(--fh) + var(--rail) * 2);overflow:hidden;
   border:1px solid rgba(244,240,230,.13);
-  background:linear-gradient(180deg,#060505,#131010 14%,#171313 50%,#131010 86%,#060505);
-  box-shadow:inset 0 14px 30px rgba(0,0,0,.7),inset 0 -14px 30px rgba(0,0,0,.7),0 20px 46px -28px #000;
+  background:linear-gradient(90deg,#060505,#131010 14%,#171313 50%,#131010 86%,#060505);
+  box-shadow:inset 14px 0 30px rgba(0,0,0,.7),inset -14px 0 30px rgba(0,0,0,.7),0 20px 46px -28px #000;
 }
 /* the mechanism only eases when it is actually being turned; the rest of
    the time the height tracks an opening drawer frame for frame */
 .drum-window.turning{transition:--fh 1.15s cubic-bezier(.55,-.18,.25,1.12)}
-/* ribbed axle rails down both sides, like a cassette transport */
+/* ribbed bearing plates top and bottom — the ends of an upright axle */
 .drum-window::before,.drum-window::after{
-  content:"";position:absolute;top:7px;bottom:7px;width:10px;z-index:4;border-radius:3px;
-  background:repeating-linear-gradient(180deg,rgba(244,240,230,.15) 0 5px,rgba(0,0,0,.6) 5px 10px);
+  content:"";position:absolute;left:6px;right:6px;height:9px;z-index:4;border-radius:3px;
+  background:repeating-linear-gradient(90deg,rgba(244,240,230,.15) 0 5px,rgba(0,0,0,.6) 5px 10px);
   box-shadow:0 0 0 1px rgba(0,0,0,.6);
 }
-.drum-window::before{left:5px}
-.drum-window::after{right:5px}
-.drum-axis{position:absolute;inset:0 24px}
+.drum-window::before{top:4px}
+.drum-window::after{bottom:4px}
+.drum-axis{position:absolute;inset:var(--rail) 0}
 .drum{
   position:absolute;inset:0;transform-style:preserve-3d;
-  transform:rotateX(0deg);
+  transform:rotateY(0deg);
   transition:transform 1.15s cubic-bezier(.55,-.18,.25,1.12);
 }
 .face{
   position:absolute;left:0;right:0;top:50%;height:var(--fh);margin-top:calc(var(--fh) / -2);
-  transform:rotateX(calc(var(--k) * -36deg)) translateZ(calc(var(--fh) * 1.5388));
+  transform:rotateY(calc(var(--k) * -36deg)) translateZ(var(--dr));
   backface-visibility:hidden;overflow:hidden;
 }
-.face.leaf{padding:0 10px;background:linear-gradient(180deg,#151111,#0f0c0b 18%,#0f0c0b 82%,#151111)}
+.face.leaf{
+  padding:0 clamp(14px,2.2vw,24px);
+  background:linear-gradient(90deg,#151111,#0f0c0b 6%,#0f0c0b 94%,#151111);
+}
 /* once the drum has settled the far side is out of reach of tab & pointer */
 .drum-window:not(.turning) .face.leaf.back{visibility:hidden}
 .face.shell{
   display:flex;align-items:center;justify-content:center;
-  border-top:1px solid rgba(244,240,230,.07);border-bottom:1px solid rgba(0,0,0,.75);
+  border-left:1px solid rgba(244,240,230,.07);border-right:1px solid rgba(0,0,0,.75);
   background:
-    repeating-linear-gradient(180deg,rgba(244,240,230,.045) 0 2px,transparent 2px 9px),
-    linear-gradient(180deg,#1b1615,#0e0b0a);
+    repeating-linear-gradient(90deg,rgba(244,240,230,.045) 0 2px,transparent 2px 9px),
+    linear-gradient(90deg,#1b1615,#0e0b0a);
 }
 .face.shell span{
   font-family:var(--util);font-size:9px;letter-spacing:.42em;text-transform:uppercase;
   color:rgba(244,240,230,.22);
 }
-/* the curve of the drum falling into shadow at the lip of the window */
+/* the curve of the drum falling into shadow at the edges of the window */
 .drum-shade{
   position:absolute;inset:0;z-index:3;pointer-events:none;
-  background:linear-gradient(180deg,
-    rgba(13,11,10,.5),rgba(13,11,10,0) 20px,
-    rgba(13,11,10,0) calc(100% - 20px),rgba(13,11,10,.5));
+  /* falls to nothing by the leaf's inner padding, so no row text is dimmed */
+  background:linear-gradient(90deg,
+    rgba(13,11,10,.55),rgba(13,11,10,0) 14px,
+    rgba(13,11,10,0) calc(100% - 14px),rgba(13,11,10,.55));
 }
 @media (max-width:680px){
-  .drum-axis{inset:0 18px}
-  .face.leaf{padding:0 4px}
-  .drum-window::before,.drum-window::after{width:8px}
+  .drum-window{--rail:14px}
+  .drum-window::before,.drum-window::after{height:7px}
 }
 
 .row{border-top:1px solid rgba(244,240,230,.17)}
@@ -813,7 +821,7 @@ a{color:inherit}
         <button role="tab" id="tab-b" aria-selected="false" aria-controls="side-b" data-side="b">B-Side / Act II</button>
       </div>
 
-      <!-- the drum: both acts ride one ten-faced cylinder on a single axle -->
+      <!-- the drum: both acts ride one ten-faced cylinder on an upright axle -->
       <div class="deck" id="deck">
         <div class="drum-window" id="deck-window">
           <div class="drum-axis">
@@ -1335,10 +1343,11 @@ build(ACT1, document.getElementById("side-a"), "Act I");
 build(ACT2, document.getElementById("side-b"), "Act II");
 
 /* ─────────────────────────────────────────────────────────────
-   THE DRUM — the two acts sit on opposite faces of one cylinder,
-   so changing sides rolls act I to the back and brings act II up
-   from below. The window is only ever as tall as the side facing
-   front, which is what keeps a flip from leaving a hole behind.
+   THE DRUM — the two acts sit on opposite faces of one cylinder
+   turning on an upright axle, so changing sides sweeps act I off
+   to the right and brings act II round from the left. The window
+   is only ever as tall as the side facing front, which is what
+   keeps a flip from leaving a hole behind.
    ───────────────────────────────────────────────────────────── */
 var deckWin=document.getElementById("deck-window"),
     drum=document.getElementById("drum"),
@@ -1349,6 +1358,10 @@ var deckWin=document.getElementById("deck-window"),
 function sizeDrum(){
   var live = side==="a" ? leafA : leafB;
   deckWin.style.setProperty("--fh", Math.max(140, live.offsetHeight)+"px");
+  /* the axle is upright, so the radius comes off the face width: for a
+     ten-sided prism, r = (w / 2) / tan(18deg) */
+  var w = leafA.parentNode.offsetWidth;
+  if(w) deckWin.style.setProperty("--dr", (w * 1.5388).toFixed(1)+"px");
 }
 /* a drawer opens over .42s; ride the height down to the frame so the
    housing grows with it instead of clipping the script */
@@ -1370,7 +1383,8 @@ function setSide(s){
   leafB.setAttribute("aria-hidden", String(!isB));
   document.getElementById("tab-a").setAttribute("aria-selected",String(!isB));
   document.getElementById("tab-b").setAttribute("aria-selected",String(isB));
-  /* always forward: the drum only ever turns one way, like a real one */
+  /* always forward: the drum only ever turns one way, like a real one —
+     the outgoing act sweeps off right, the incoming one arrives from left */
   turn += 180;
   if(!RM){
     deckWin.classList.add("turning");
@@ -1380,7 +1394,7 @@ function setSide(s){
       sizeDrum();               /* snap to exact, in case the turn raced a reflow */
     },1220);
   }
-  drum.style.transform="rotateX("+turn+"deg)";
+  drum.style.transform="rotateY("+turn+"deg)";
   sizeDrum();
   carriage();
 }
