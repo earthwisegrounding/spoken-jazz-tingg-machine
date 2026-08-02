@@ -287,6 +287,50 @@ a{color:inherit}
   gap:clamp(28px,5vw,84px);align-items:start;margin-top:clamp(28px,5vh,56px);
 }
 @media (max-width:900px){.premise{grid-template-columns:1fr}}
+/* the left column runs out long before the right one does; let it stretch to
+   the full row so the leftover space can be given to the journal page */
+.premise-col{align-self:stretch;display:flex;flex-direction:column}
+/* flex-grow with no min-height: this only ever occupies slack that already
+   exists, so it can never make the left column the taller of the two */
+.slack{
+  flex:1 1 auto;min-height:0;position:relative;overflow:hidden;
+  margin:clamp(30px,4.5vh,56px) 0 0 calc(var(--gut) * -1);
+}
+.journal{
+  position:absolute;inset:0;overflow:hidden;isolation:isolate;
+  background:url("{{ASSET:journal.jpg}}") 0 0/cover no-repeat;
+  mix-blend-mode:multiply;opacity:.62;
+}
+/* the ring someone left on the page — contain, so a short slack scales it
+   down rather than cropping or stretching it */
+.stain{
+  position:absolute;inset:4% 20% 4% 4%;
+  background:url("{{ASSET:coffee.png}}") center/contain no-repeat;
+  mix-blend-mode:multiply;transform:rotate(-6deg);
+}
+/* the same halftone screen every other plate on the page gets */
+.journal::before{
+  content:"";position:absolute;inset:0;
+  background-image:radial-gradient(circle,var(--paper) 34%,transparent 36%);
+  background-size:3px 3px;mix-blend-mode:lighten;opacity:.5;
+}
+/* white is the neutral colour under multiply, so painting it over the edges
+   dissolves the page into the stock instead of cutting a rectangle out of it */
+.journal::after{
+  content:"";position:absolute;inset:0;
+  background:
+    linear-gradient(180deg,#fff,rgba(255,255,255,0) 20%,rgba(255,255,255,0) 86%,#fff),
+    linear-gradient(90deg,rgba(255,255,255,0) 64%,#fff);
+}
+/* Stacked to one column there is no slack left over, so the notebook page
+   stands down — but the ring still gets a home, sat behind the prose where
+   the type can read straight over the top of it. */
+@media (max-width:900px){
+  .slack{display:none}
+  .premise .prose{
+    background:url("{{ASSET:coffee.png}}") 96% 90%/min(82%,290px) no-repeat;
+  }
+}
 .lede{
   font-family:var(--standard);font-size:clamp(19px,2.3vw,31px);line-height:1.36;
   margin:0;max-width:28ch;
@@ -778,7 +822,7 @@ a{color:inherit}
   <h2 class="h2 poster premise-h rise"><span class="mis"><span class="t">A renaissance in a drab navy town</span></span></h2>
 
   <div class="premise">
-    <div>
+    <div class="premise-col">
       <p class="lede rise">Two budding jazz musicians share a house not far from the college they attend on scholarship in a drab Navy town outside of Seattle. <em>A creative community is unwittingly ignited — adding color to the landscape &amp; a renaissance despite the gravity of a blue-collar world.</em></p>
 
       <div class="stats rise">
@@ -786,6 +830,13 @@ a{color:inherit}
         <div><strong>22</strong><span>Standards</span></div>
         <div><strong>384</strong><span>Pages</span></div>
         <div><strong>1</strong><span>Typewriter</span></div>
+      </div>
+
+      <!-- whatever this column leaves over: a page of the notebook showing
+           through the stock, with a coffee ring set down on top of it -->
+      <div class="slack" aria-hidden="true">
+        <div class="journal"></div>
+        <div class="stain"></div>
       </div>
     </div>
 
