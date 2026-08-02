@@ -347,11 +347,74 @@ a{color:inherit}
 .acts button[aria-selected="true"]{background:var(--pink);color:#0d0b0a}
 .acts button:hover{color:var(--bone)}
 
-.deck{position:relative;perspective:1600px}
-.side-a,.side-b{transition:opacity .45s ease,transform .55s cubic-bezier(.2,.85,.3,1)}
-.side-b{position:absolute;inset:0;opacity:0;pointer-events:none;transform:rotateY(-14deg) translateZ(-30px)}
-.deck.flipped .side-a{opacity:0;pointer-events:none;transform:rotateY(14deg) translateZ(-30px)}
-.deck.flipped .side-b{opacity:1;pointer-events:auto;transform:none;position:relative}
+/* ── THE DRUM ─────────────────────────────────────────────────
+   Both acts ride one ten-faced cylinder turning on a single axle:
+   Act I on face 0, Act II on face 5, eight blank shell segments
+   between them. Flipping sides is a half turn, so Act I genuinely
+   rolls away to the back while Act II comes up from below — no
+   emptied-out block left behind in the layout.
+   The window is as tall as whichever side is facing front, and
+   nothing else, which is what closes the dead gap.
+   Deliberately no perspective: rows compress vertically as they
+   turn, like the innards of a tape deck, with no trapezoid skew. */
+@property --fh{syntax:"<length>";inherits:true;initial-value:520px}
+
+.deck{position:relative}
+.drum-window{
+  --fh:520px;
+  position:relative;height:var(--fh);overflow:hidden;
+  border:1px solid rgba(244,240,230,.13);
+  background:linear-gradient(180deg,#060505,#131010 14%,#171313 50%,#131010 86%,#060505);
+  box-shadow:inset 0 14px 30px rgba(0,0,0,.7),inset 0 -14px 30px rgba(0,0,0,.7),0 20px 46px -28px #000;
+}
+/* the mechanism only eases when it is actually being turned; the rest of
+   the time the height tracks an opening drawer frame for frame */
+.drum-window.turning{transition:--fh 1.15s cubic-bezier(.55,-.18,.25,1.12)}
+/* ribbed axle rails down both sides, like a cassette transport */
+.drum-window::before,.drum-window::after{
+  content:"";position:absolute;top:7px;bottom:7px;width:10px;z-index:4;border-radius:3px;
+  background:repeating-linear-gradient(180deg,rgba(244,240,230,.15) 0 5px,rgba(0,0,0,.6) 5px 10px);
+  box-shadow:0 0 0 1px rgba(0,0,0,.6);
+}
+.drum-window::before{left:5px}
+.drum-window::after{right:5px}
+.drum-axis{position:absolute;inset:0 24px}
+.drum{
+  position:absolute;inset:0;transform-style:preserve-3d;
+  transform:rotateX(0deg);
+  transition:transform 1.15s cubic-bezier(.55,-.18,.25,1.12);
+}
+.face{
+  position:absolute;left:0;right:0;top:50%;height:var(--fh);margin-top:calc(var(--fh) / -2);
+  transform:rotateX(calc(var(--k) * -36deg)) translateZ(calc(var(--fh) * 1.5388));
+  backface-visibility:hidden;overflow:hidden;
+}
+.face.leaf{padding:0 10px;background:linear-gradient(180deg,#151111,#0f0c0b 18%,#0f0c0b 82%,#151111)}
+/* once the drum has settled the far side is out of reach of tab & pointer */
+.drum-window:not(.turning) .face.leaf.back{visibility:hidden}
+.face.shell{
+  display:flex;align-items:center;justify-content:center;
+  border-top:1px solid rgba(244,240,230,.07);border-bottom:1px solid rgba(0,0,0,.75);
+  background:
+    repeating-linear-gradient(180deg,rgba(244,240,230,.045) 0 2px,transparent 2px 9px),
+    linear-gradient(180deg,#1b1615,#0e0b0a);
+}
+.face.shell span{
+  font-family:var(--util);font-size:9px;letter-spacing:.42em;text-transform:uppercase;
+  color:rgba(244,240,230,.22);
+}
+/* the curve of the drum falling into shadow at the lip of the window */
+.drum-shade{
+  position:absolute;inset:0;z-index:3;pointer-events:none;
+  background:linear-gradient(180deg,
+    rgba(13,11,10,.5),rgba(13,11,10,0) 20px,
+    rgba(13,11,10,0) calc(100% - 20px),rgba(13,11,10,.5));
+}
+@media (max-width:680px){
+  .drum-axis{inset:0 18px}
+  .face.leaf{padding:0 4px}
+  .drum-window::before,.drum-window::after{width:8px}
+}
 
 .row{border-top:1px solid rgba(244,240,230,.17)}
 .row:last-child{border-bottom:1px solid rgba(244,240,230,.17)}
@@ -648,7 +711,7 @@ a{color:inherit}
 .js .rise.in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){
   .rise{opacity:1;transform:none;transition:none}
-  .side-a,.side-b,.drawer,.viewer .frame img{transition:none}
+  .drum,.drum-window,.drawer,.viewer .frame img{transition:none}
 }
 </style>
 
@@ -765,9 +828,29 @@ a{color:inherit}
         <button role="tab" id="tab-b" aria-selected="false" aria-controls="side-b" data-side="b">B-Side / Act II</button>
       </div>
 
+      <!-- the drum: both acts ride one ten-faced cylinder on a single axle -->
       <div class="deck" id="deck">
-        <div class="side-a" id="side-a" role="tabpanel" aria-labelledby="tab-a"></div>
-        <div class="side-b" id="side-b" role="tabpanel" aria-labelledby="tab-b"></div>
+        <div class="drum-window" id="deck-window">
+          <div class="drum-axis">
+            <div class="drum" id="drum">
+              <div class="face leaf" style="--k:0">
+                <div class="side-a" id="side-a" role="tabpanel" aria-labelledby="tab-a"></div>
+              </div>
+              <div class="face shell" style="--k:1" aria-hidden="true"><span>Spoken Jazz · 33⅓</span></div>
+              <div class="face shell" style="--k:2" aria-hidden="true"><span>tingg*</span></div>
+              <div class="face shell" style="--k:3" aria-hidden="true"><span>Act II ▸</span></div>
+              <div class="face shell" style="--k:4" aria-hidden="true"><span>Spoken Jazz · 33⅓</span></div>
+              <div class="face leaf back" style="--k:5">
+                <div class="side-b" id="side-b" role="tabpanel" aria-labelledby="tab-b" aria-hidden="true"></div>
+              </div>
+              <div class="face shell" style="--k:6" aria-hidden="true"><span>Spoken Jazz · 33⅓</span></div>
+              <div class="face shell" style="--k:7" aria-hidden="true"><span>tingg*</span></div>
+              <div class="face shell" style="--k:8" aria-hidden="true"><span>Act I ▸</span></div>
+              <div class="face shell" style="--k:9" aria-hidden="true"><span>Spoken Jazz · 33⅓</span></div>
+            </div>
+          </div>
+          <div class="drum-shade" aria-hidden="true"></div>
+        </div>
       </div>
     </div>
 
@@ -1257,6 +1340,7 @@ function build(list, host, actLabel){
       var open=row.classList.toggle("open");
       btn.setAttribute("aria-expanded",String(open));
       dr.style.height = open ? dr.firstElementChild.offsetHeight+"px" : "0px";
+      trackDrum();
       if(open){ carriage(); }
     });
     host.appendChild(row);
@@ -1265,16 +1349,65 @@ function build(list, host, actLabel){
 build(ACT1, document.getElementById("side-a"), "Act I");
 build(ACT2, document.getElementById("side-b"), "Act II");
 
-var deck=document.getElementById("deck");
+/* ─────────────────────────────────────────────────────────────
+   THE DRUM — the two acts sit on opposite faces of one cylinder,
+   so changing sides rolls act I to the back and brings act II up
+   from below. The window is only ever as tall as the side facing
+   front, which is what keeps a flip from leaving a hole behind.
+   ───────────────────────────────────────────────────────────── */
+var deckWin=document.getElementById("deck-window"),
+    drum=document.getElementById("drum"),
+    leafA=document.getElementById("side-a"),
+    leafB=document.getElementById("side-b"),
+    side="a", turn=0, settle=null;
+
+function sizeDrum(){
+  var live = side==="a" ? leafA : leafB;
+  deckWin.style.setProperty("--fh", Math.max(140, live.offsetHeight)+"px");
+}
+/* a drawer opens over .42s; ride the height down to the frame so the
+   housing grows with it instead of clipping the script */
+function trackDrum(){
+  var t0=Date.now();
+  (function tick(){
+    sizeDrum();
+    if(Date.now()-t0 < 520) requestAnimationFrame(tick);
+  })();
+}
+
+function setSide(s){
+  if(s===side) return;
+  side=s;
+  var isB = s==="b";
+  leafA.parentNode.classList.toggle("back", isB);
+  leafB.parentNode.classList.toggle("back", !isB);
+  leafA.setAttribute("aria-hidden", String(isB));
+  leafB.setAttribute("aria-hidden", String(!isB));
+  document.getElementById("tab-a").setAttribute("aria-selected",String(!isB));
+  document.getElementById("tab-b").setAttribute("aria-selected",String(isB));
+  /* always forward: the drum only ever turns one way, like a real one */
+  turn += 180;
+  if(!RM){
+    deckWin.classList.add("turning");
+    clearTimeout(settle);
+    settle=setTimeout(function(){ deckWin.classList.remove("turning"); },1220);
+  }
+  drum.style.transform="rotateX("+turn+"deg)";
+  sizeDrum();
+  carriage();
+}
+
 [].forEach.call(document.querySelectorAll(".acts button"),function(b){
-  b.addEventListener("click",function(){
-    var isB = b.dataset.side==="b";
-    deck.classList.toggle("flipped",isB);
-    document.getElementById("tab-a").setAttribute("aria-selected",String(!isB));
-    document.getElementById("tab-b").setAttribute("aria-selected",String(isB));
-    carriage();
-  });
+  b.addEventListener("click",function(){ setSide(b.dataset.side); });
 });
+
+sizeDrum();
+addEventListener("resize", sizeDrum);
+if(window.ResizeObserver){
+  var dro=new ResizeObserver(sizeDrum);
+  dro.observe(leafA); dro.observe(leafB);
+}
+if(document.fonts && document.fonts.ready) document.fonts.ready.then(sizeDrum);
 
 /* ticker of tunes */
 var tunes = ACT1.concat(ACT2).map(function(s){ return s.tune; });

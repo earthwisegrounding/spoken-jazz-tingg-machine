@@ -51,7 +51,8 @@ def main() -> None:
     inlined = TOKEN.sub(lambda m: data_uri(m.group(1)), src)
     (DIST / "artifact.html").write_text(inlined, encoding="utf-8")
 
-    # QA-only copy: honours ?y=<px> so headless screenshots land where asked.
+    # QA-only copy: honours ?y=<px> so headless screenshots land where asked,
+    # and ?side=b so the setlist drum can be shot on its far face.
     qa = ROOT / "_qa"
     qa.mkdir(exist_ok=True)
     qa_head = HEAD.replace("<head>", '<head>\n<base href="/">')
@@ -59,6 +60,10 @@ def main() -> None:
     # QA build shifts the document with a negative margin instead.
     qa_js = (
         "<script>(function(){"
+        # the drum takes 1.15s to turn, so the flip goes first and the shot
+        # budget covers it
+        "if(/[?&]side=b/.test(location.search)){"
+        "var t=document.getElementById('tab-b'); if(t) t.click();}"
         "var m=/[?&]y=(\\d+)/.exec(location.search); if(!m) return;"
         "var s=document.createElement('style');"
         "s.textContent='body{margin-top:-'+m[1]+'px!important}';"
@@ -83,9 +88,9 @@ def main() -> None:
         "iframe{border:0;display:block}</style>"
         "<script>"
         "var q=new URLSearchParams(location.search);"
-        "var w=q.get('w')||390,h=q.get('h')||844,y=q.get('y')||0;"
+        "var w=q.get('w')||390,h=q.get('h')||844,y=q.get('y')||0,sd=q.get('side')||'a';"
         "document.write('<iframe width='+w+' height='+h+"
-        "' src=\"/_qa/index.html?y='+y+'&r='+Math.random()+'\"></iframe>');"
+        "' src=\"/_qa/index.html?y='+y+'&side='+sd+'&r='+Math.random()+'\"></iframe>');"
         "</script>",
         encoding="utf-8",
     )
