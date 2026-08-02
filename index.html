@@ -1390,7 +1390,10 @@ function setSide(s){
   if(!RM){
     deckWin.classList.add("turning");
     clearTimeout(settle);
-    settle=setTimeout(function(){ deckWin.classList.remove("turning"); },1220);
+    settle=setTimeout(function(){
+      deckWin.classList.remove("turning");
+      sizeDrum();               /* snap to exact, in case the turn raced a reflow */
+    },1220);
   }
   drum.style.transform="rotateX("+turn+"deg)";
   sizeDrum();
@@ -1403,11 +1406,16 @@ function setSide(s){
 
 sizeDrum();
 addEventListener("resize", sizeDrum);
+addEventListener("orientationchange", sizeDrum);
 if(window.ResizeObserver){
   var dro=new ResizeObserver(sizeDrum);
   dro.observe(leafA); dro.observe(leafB);
 }
 if(document.fonts && document.fonts.ready) document.fonts.ready.then(sizeDrum);
+/* last line of defence: never let a stale height clip a row — re-measure the
+   moment anyone reaches for the drum, whichever trigger above may have missed */
+deckWin.addEventListener("pointerenter", sizeDrum);
+deckWin.addEventListener("focusin", sizeDrum);
 
 /* ticker of tunes */
 var tunes = ACT1.concat(ACT2).map(function(s){ return s.tune; });
