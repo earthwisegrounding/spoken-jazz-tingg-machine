@@ -750,6 +750,50 @@ a{color:inherit}
   .rise{opacity:1;transform:none;transition:none}
   .drum,.drum-window,.drawer,.viewer .frame img{transition:none}
 }
+
+/* ═══════════ THE BLACK COCKS ════════════════════════════════
+   Nobody finds this by scrolling. Type the band's name onto the
+   sheet in section 03, hit return, and Bub comes off the page.
+   ─────────────────────────────────────────────────────────── */
+.egg{
+  /* over the rail, under the grain — the noise plate stays on top of everything */
+  position:fixed;inset:0;z-index:950;overflow:hidden;contain:layout paint style;
+  background:radial-gradient(130% 95% at 50% 46%,rgba(13,11,10,.42),rgba(13,11,10,.88));
+  opacity:0;transition:opacity .55s ease;cursor:crosshair;
+}
+.egg.on{opacity:1}
+.egg-hud{position:absolute;left:0;right:0;top:clamp(16px,5vh,58px);text-align:center;padding:0 16px}
+.egg-title{
+  font-family:var(--poster);font-weight:900;text-transform:uppercase;
+  font-size:clamp(26px,7.2vw,84px);line-height:.92;letter-spacing:-.035em;color:var(--bone);
+  text-shadow:4px 4px 0 var(--pink),-4px -4px 0 var(--blue);
+  animation:egg-in .8s cubic-bezier(.2,.8,.3,1) both,egg-dim 1.4s 2.3s ease both;
+}
+.egg-score{
+  margin-top:clamp(12px,2.4vh,26px);font-family:var(--util);font-size:clamp(9px,1.3vw,11px);
+  letter-spacing:.24em;text-transform:uppercase;color:rgba(244,240,230,.62);
+}
+.egg-score b{color:var(--pink);font-weight:400}
+.egg-item,.egg-bub{position:absolute;left:0;top:0;will-change:transform}
+.egg-item{filter:drop-shadow(0 12px 20px rgba(0,0,0,.62))}
+.egg-item img{width:100%;height:100%;display:block}
+.egg-item.gone{transition:transform .34s cubic-bezier(.5,0,.75,0),opacity .34s ease;opacity:0}
+.egg-bub{filter:drop-shadow(0 16px 28px rgba(0,0,0,.7))}
+.egg-bub img{position:absolute;left:0;top:0;width:100%;height:auto;opacity:0}
+.egg-bub img.on{opacity:1}
+.egg.done .egg-bub{transition:transform 1.5s cubic-bezier(.16,.9,.3,1)}
+.egg-crumb{
+  position:absolute;left:0;top:0;width:7px;height:7px;margin:-3px 0 0 -3px;border-radius:50%;
+  background:var(--bone);will-change:transform,opacity;
+  transition:transform .6s cubic-bezier(.15,.75,.35,1),opacity .6s ease;
+}
+.egg-say{position:fixed;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+@keyframes egg-in{from{opacity:0;transform:scale(.84) translateY(-18px)}to{opacity:1;transform:none}}
+@keyframes egg-dim{to{opacity:.2}}
+@media (prefers-reduced-motion:reduce){
+  .egg-title{animation:egg-dim 1.4s 2.3s ease both}
+  .egg-item.gone,.egg-crumb{transition-duration:.01s}
+}
 </style>
 
 <div class="grain" aria-hidden="true"></div>
@@ -1050,7 +1094,7 @@ praying for the kindness of strangers</pre>
       <p>Bub self-published three hand-made books in the span of the story you're about to hear — cut with scissors and a glue stick, set in the font of a late-forties Remington, sold for five bucks a copy on the Seattle–Bainbridge run. He fronted a band called <b>Spoken Jazz</b>, playing the typewriter, and made a room full of drinkers in a crooked-floored dive go so quiet you could hear a pin drop.</p>
 
       <ul class="books">
-        <li><b>Bebop Coffeeshop</b><span>Book One</span></li>
+        <li><b>Bebop Coffee Shop</b><span>Book One</span></li>
         <li><b>The Fabulous Adventures of Yours Truly</b><span>Book Two</span></li>
         <li><b>Spoken Jazz &amp; the tingg<span class="ast">*</span> Machine</b><span>Book Three</span></li>
       </ul>
@@ -1129,7 +1173,7 @@ document.querySelectorAll(".mis").forEach(function(el){
    DATA — every scene, its tune, and what happens in it.
    ───────────────────────────────────────────────────────────── */
 var ACT1 = [
- {n:"01",t:"Bebop Coffeeshop",tune:"So What",k:"soup",
+ {n:"01",t:"Bebop Coffee Shop",tune:"So What",k:"soup",
   note:"Spring 2000, the music-department lounge. Somebody's changing strings, somebody's resting their chops, and a stack of hand-made poetry books lands in the middle of the oval table.",
   s:[["Gwen","You know it's rough when Bub's the best soloist in the band."],["Bub","She's right. You play with the band you have, not the band you wish you had."],["i","(He drops a handful of hand-bound booklets on the table.)"],["Kevin","Looks like you used an old typewriter for the font."],["Bub","It's an old Remington portable from the late 40's. I used a glue stick &amp; scissors for the rest."]]},
  {n:"02",t:"Open Mic at the Old Town Tavern",tune:"Lemons",k:"bar",
@@ -1280,6 +1324,29 @@ function carriage(){
   f.frequency.setValueAtTime(700,t); f.frequency.exponentialRampToValueAtTime(2600,t+.15);
   g.gain.setValueAtTime(.3,t); g.gain.exponentialRampToValueAtTime(.001,t+.17);
   s.connect(f); f.connect(g); g.connect(bus); s.start(t); s.stop(t+.18);
+}
+function chomp(){
+  if(!soundOn||!ctx) return;
+  var t=ctx.currentTime, o=ctx.createOscillator(), f=ctx.createBiquadFilter(), g=ctx.createGain();
+  o.type="sawtooth";
+  o.frequency.setValueAtTime(430,t); o.frequency.exponentialRampToValueAtTime(120,t+.09);
+  f.type="lowpass"; f.frequency.value=1250; f.Q.value=6;
+  g.gain.setValueAtTime(.001,t); g.gain.linearRampToValueAtTime(.2,t+.012);
+  g.gain.exponentialRampToValueAtTime(.001,t+.1);
+  o.connect(f); f.connect(g); g.connect(bus); o.start(t); o.stop(t+.11);
+}
+function burp(){
+  if(!soundOn||!ctx) return;
+  var t=ctx.currentTime, o=ctx.createOscillator(), f=ctx.createBiquadFilter(),
+      g=ctx.createGain(), lfo=ctx.createOscillator(), lg=ctx.createGain();
+  o.type="sawtooth";
+  o.frequency.setValueAtTime(96,t); o.frequency.exponentialRampToValueAtTime(52,t+.55);
+  f.type="lowpass"; f.frequency.value=560; f.Q.value=2.6;
+  lfo.type="square"; lfo.frequency.value=26; lg.gain.value=26;
+  lfo.connect(lg); lg.connect(o.frequency); lfo.start(t); lfo.stop(t+.6);
+  g.gain.setValueAtTime(.001,t); g.gain.linearRampToValueAtTime(.26,t+.05);
+  g.gain.exponentialRampToValueAtTime(.001,t+.58);
+  o.connect(f); f.connect(g); g.connect(bus); o.start(t); o.stop(t+.6);
 }
 var sndBtn=document.getElementById("snd");
 sndBtn.addEventListener("click", function(){
@@ -1561,7 +1628,11 @@ window.addEventListener("keydown",function(e){
   if(t && (t.tagName==="INPUT"&&t!==keyin || t.tagName==="TEXTAREA" || t.isContentEditable)) return;
   if(e.metaKey||e.ctrlKey||e.altKey) return;
   if(e.key==="Backspace"){ e.preventDefault(); stopAuto(); touched=true; back(); return; }
-  if(e.key==="Enter"){ e.preventDefault(); stopAuto(); touched=true; put("\n"); return; }
+  if(e.key==="Enter"){
+    e.preventDefault(); stopAuto(); touched=true;
+    if(eggArmed()){ clearSheet(); bell(); eggStart(); return; }
+    put("\n"); return;
+  }
   if(e.key.length===1){ e.preventDefault(); stopAuto(); touched=true; put(e.key); }
 });
 
@@ -1586,6 +1657,230 @@ var mObs=new IntersectionObserver(function(es){
   });
 },{threshold:[0,.3,.6]});
 mObs.observe(document.querySelector(".rig"));
+
+/* ─────────────────────────────────────────────────────────────
+   THE BLACK COCKS — the sheet is also a keyhole. Type the band's
+   name on it and hit return: Bub comes off the page and eats the
+   props, Pac-Man style, until there's nothing left of the set.
+   Nothing loads until somebody actually finds it.
+   ───────────────────────────────────────────────────────────── */
+var EGG_CODE="wearetheblackcocks";
+var EGG_HEADS=[  /* shut, open — right-facing first, then left */
+  "{{ASSET:egg-bub-r.webp}}","{{ASSET:egg-bub-r-open.webp}}",
+  "{{ASSET:egg-bub-l.webp}}","{{ASSET:egg-bub-l-open.webp}}"];
+var EGG_PROPS=[
+  {src:"{{ASSET:egg-shot.webp}}",       w:52,h:71},
+  {src:"{{ASSET:egg-bra.webp}}",        w:78,h:72},
+  {src:"{{ASSET:egg-powder.webp}}",     w:82,h:65},
+  {src:"{{ASSET:egg-rooster.webp}}",    w:80,h:85},
+  {src:"{{ASSET:egg-typewriter.webp}}", w:90,h:79}
+];
+var EGG_TALL=397/326;   /* the head sprites are all one canvas, this shape */
+var WAVES=3, E=null;
+
+function eggArmed(){
+  return out.textContent.toLowerCase().replace(/[^a-z]/g,"").slice(-EGG_CODE.length)===EGG_CODE;
+}
+
+function eggStart(){
+  if(E) return;
+  var el=document.createElement("div");
+  el.className="egg"; el.setAttribute("aria-hidden","true");
+  el.innerHTML='<div class="egg-hud"><div class="egg-title">We are the<br>Black Cocks</div>'+
+               '<div class="egg-score"></div></div>';
+  var bub=document.createElement("div");
+  bub.className="egg-bub";
+  EGG_HEADS.forEach(function(src){ var im=new Image(); im.src=src; im.alt=""; bub.appendChild(im); });
+  el.appendChild(bub);
+  var say=document.createElement("p");
+  say.className="egg-say"; say.setAttribute("role","status");
+
+  E={el:el, bub:bub, frames:bub.querySelectorAll("img"), score:el.querySelector(".egg-score"),
+     say:say, items:[], wave:0, ate:0, dir:0, jaw:0, chew:0, t:0, last:0, raf:0};
+  eggFit();
+  E.x=E.w*.5; E.y=E.h*.68; E.vx=0; E.vy=0;
+
+  keyin.blur();
+  document.body.appendChild(el);
+  document.body.appendChild(say);
+  /* the live region has to be in the document before it gets its text,
+     or there's no change for a screen reader to announce */
+  setTimeout(function(){ say.textContent="Bub is loose on the page, eating it. Press escape to stop him."; },60);
+  requestAnimationFrame(function(){ if(E) E.el.classList.add("on"); });
+  eggWave();
+  window.addEventListener("keydown",eggKey,true);
+  window.addEventListener("resize",eggFit);
+  el.addEventListener("click",eggStop);
+  E.raf=requestAnimationFrame(eggTick);
+}
+
+function eggFit(){
+  if(!E) return;
+  E.w=window.innerWidth; E.h=window.innerHeight;
+  E.size=Math.max(96,Math.min(170,E.w*.14));
+  E.prop=Math.max(.62,Math.min(1,E.w/1100));   /* props shrink with the room */
+  if(E.bub) E.bub.style.width=E.size+"px";
+  /* drag anything the new viewport left behind back into reach */
+  E.items.forEach(function(it){
+    it.x=Math.max(it.w*.5,Math.min(E.w-it.w*.5,it.x));
+    it.y=Math.max(it.h*.5,Math.min(E.h-it.h*.5,it.y));
+  });
+}
+
+/* Scatter the wave: twenty-odd darts at the board, keeping whichever
+   spot sits furthest from Bub and from everything already down. */
+function eggDrop(it){
+  var pad=36+Math.max(it.w,it.h)*.5, best=[E.w/2,E.h/2], far=-1;
+  for(var k=0;k<22;k++){
+    var x=pad+Math.random()*Math.max(1,E.w-pad*2),
+        y=pad+Math.random()*Math.max(1,E.h-pad*2),
+        d=Math.hypot(x-E.x,y-E.y);
+    for(var i=0;i<E.items.length;i++) d=Math.min(d,Math.hypot(x-E.items[i].x,y-E.items[i].y));
+    if(d>far){ far=d; best=[x,y]; }
+    if(d>200) break;
+  }
+  it.x=best[0]; it.y=best[1];
+}
+
+function eggWave(){
+  if(!E) return;
+  E.items=[]; E.wave++;
+  var n=Math.min(5+E.wave,EGG_PROPS.length*2);
+  for(var i=0;i<n;i++){
+    var p=EGG_PROPS[(i+E.wave)%EGG_PROPS.length];
+    var w=Math.round(p.w*E.prop), h=Math.round(p.h*E.prop);
+    var d=document.createElement("div");
+    d.className="egg-item"; d.style.width=w+"px"; d.style.height=h+"px";
+    var im=new Image(); im.src=p.src; im.alt=""; d.appendChild(im);
+    E.el.appendChild(d);
+    var it={el:d, w:w, h:h, r:(w+h)*.26, live:true, ph:Math.random()*6.28, x:0, y:0};
+    eggDrop(it);
+    E.items.push(it);
+  }
+  eggHud();
+}
+
+function eggHud(){
+  if(!E) return;
+  var left=E.items.filter(function(o){return o.live;}).length;
+  E.score.innerHTML="Wave "+E.wave+" of "+WAVES+" · <b>"+E.ate+"</b> gobbled · "+
+                    left+" left · esc to stop";
+}
+
+function eggCrumbs(x,y){
+  for(var i=0;i<7;i++){
+    var c=document.createElement("i");
+    c.className="egg-crumb";
+    c.style.transform="translate3d("+x+"px,"+y+"px,0)";
+    E.el.appendChild(c);
+    (function(c){
+      var a=Math.random()*6.283, d=36+Math.random()*56;
+      requestAnimationFrame(function(){
+        c.style.transform="translate3d("+(x+Math.cos(a)*d)+"px,"+(y+Math.sin(a)*d)+"px,0) scale(.2)";
+        c.style.opacity="0";
+      });
+      setTimeout(function(){ c.remove(); },700);
+    })(c);
+  }
+}
+
+function eggEat(it){
+  it.live=false; E.ate++;
+  it.el.classList.add("gone");
+  it.el.style.transform="translate3d("+(it.x-it.w/2)+"px,"+(it.y-it.h/2)+
+                        "px,0) scale(.1) rotate(46deg)";
+  setTimeout(function(){ it.el.remove(); },420);
+  eggCrumbs(it.x,it.y);
+  chomp(); eggHud();
+  if(E.items.some(function(o){return o.live;})) return;
+  setTimeout(function(){ if(!E) return; E.wave>=WAVES ? eggFinish() : eggWave(); },640);
+}
+
+function eggTick(ts){
+  if(!E) return;
+  var dt=Math.min(.05,(ts-(E.last||ts))/1000); E.last=ts; E.t+=dt;
+
+  /* he bites with his mouth, not his middle */
+  var mx=E.x+(E.dir?-1:1)*E.size*.10, my=E.y+E.size*.16;
+
+  var tgt=null, best=1e9;
+  E.items.forEach(function(it){
+    if(!it.live) return;
+    var d=Math.hypot(it.x-mx,it.y-my);
+    if(d<best){ best=d; tgt=it; }
+  });
+
+  if(tgt){
+    /* aim, then swerve — a straight line at every target looks like a cursor */
+    var a=Math.atan2(tgt.y-my,tgt.x-mx)+(RM?0:Math.sin(E.t*2.1)*.36);
+    var sp=RM?250:440, k=Math.min(1,dt*5.5);
+    E.vx+=(Math.cos(a)*sp-E.vx)*k;
+    E.vy+=(Math.sin(a)*sp-E.vy)*k;
+  }else{
+    E.vx*=.93; E.vy*=.93;
+  }
+  E.x+=E.vx*dt; E.y+=E.vy*dt;
+
+  /* the whole head stays in frame — he's drawn from (x-½w, y-.52h) */
+  var edgeX=E.size*.5, edgeT=E.size*.52, edgeB=E.size*(EGG_TALL-.52);
+  if(E.x<edgeX){ E.x=edgeX; E.vx=Math.abs(E.vx); }
+  if(E.x>E.w-edgeX){ E.x=E.w-edgeX; E.vx=-Math.abs(E.vx); }
+  if(E.y<edgeT){ E.y=edgeT; E.vy=Math.abs(E.vy); }
+  if(E.y>E.h-edgeB){ E.y=E.h-edgeB; E.vy=-Math.abs(E.vy); }
+
+  if(Math.abs(E.vx)>28) E.dir=E.vx<0?1:0;
+  mx=E.x+(E.dir?-1:1)*E.size*.10; my=E.y+E.size*.16;   /* where the mouth ended up */
+  E.chew+=dt;
+  if(E.chew>(RM?.3:.14)){ E.chew=0; E.jaw^=1; }
+  var f=E.dir*2+E.jaw;
+  for(var i=0;i<4;i++) E.frames[i].classList.toggle("on",i===f);
+
+  var tilt=Math.max(-15,Math.min(15,E.vy*.034))*(E.dir?-1:1);
+  E.bub.style.transform="translate3d("+(E.x-E.size*.5).toFixed(1)+"px,"+
+    (E.y-E.size*.52).toFixed(1)+"px,0) rotate("+tilt.toFixed(1)+"deg)";
+
+  E.items.forEach(function(it){
+    if(!it.live) return;
+    var bob=RM?0:Math.sin(E.t*1.7+it.ph)*5;
+    it.el.style.transform="translate3d("+(it.x-it.w/2).toFixed(1)+"px,"+
+      (it.y-it.h/2+bob).toFixed(1)+"px,0)";
+    if(Math.hypot(it.x-mx,it.y-my)<it.r+E.size*.2) eggEat(it);
+  });
+
+  E.raf=requestAnimationFrame(eggTick);
+}
+
+function eggFinish(){
+  if(!E) return;
+  cancelAnimationFrame(E.raf); E.raf=0;
+  E.el.classList.add("done");
+  E.frames[1].classList.add("on"); E.frames[0].classList.remove("on");
+  E.frames[2].classList.remove("on"); E.frames[3].classList.remove("on");
+  E.bub.style.transform="translate3d("+(E.w*.5-E.size*.5)+"px,"+(E.h*.54-E.size*.52)+
+                        "px,0) scale(1.9)";
+  E.score.innerHTML="<b>"+E.ate+"</b> gobbled · the black cocks have left the building";
+  burp();
+  setTimeout(eggStop,2600);
+}
+
+function eggKey(e){
+  if(!E) return;
+  if(e.metaKey||e.ctrlKey||e.altKey) return;
+  e.stopPropagation();
+  if(e.key==="Escape"||e.key==="Enter"||e.key===" "){ e.preventDefault(); eggStop(); }
+}
+
+function eggStop(){
+  if(!E) return;
+  var el=E.el, say=E.say;
+  if(E.raf) cancelAnimationFrame(E.raf);
+  window.removeEventListener("keydown",eggKey,true);
+  window.removeEventListener("resize",eggFit);
+  E=null;
+  say.remove();
+  el.classList.remove("on");
+  setTimeout(function(){ el.remove(); },600);
+}
 
 /* ─────────────────────────────────────────────────────────────
    reveals
