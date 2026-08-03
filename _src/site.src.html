@@ -718,6 +718,18 @@ a{color:inherit}
 }
 .buy-cta:hover,.buy-cta:focus-visible{transform:translate(-3px,-3px);box-shadow:10px 10px 0 rgba(13,11,10,.32)}
 .buy-cta .arr{font-family:var(--machine);font-size:16px;color:var(--pink)}
+/* two asks, one row: the book you can buy, the production you can't yet */
+.buy-acts{display:flex;flex-wrap:wrap;gap:14px;margin-top:30px}
+.buy-acts .buy-cta{margin-top:0}
+.buy-cta.ghost{
+  background:transparent;color:#0d0b0a;box-shadow:none;
+  border:1px solid rgba(13,11,10,.45);padding:18px 26px;
+  transition:background .22s ease,color .22s ease,border-color .22s ease,transform .22s ease;
+}
+.buy-cta.ghost .arr{color:#0d0b0a}
+.buy-cta.ghost:hover,.buy-cta.ghost:focus-visible{background:#0d0b0a;border-color:#0d0b0a;color:var(--bone)}
+.buy-cta.ghost:hover .arr,.buy-cta.ghost:focus-visible .arr{color:var(--pink)}
+.buy .fund{margin:24px 0 0;max-width:46ch;font-size:14.5px;line-height:1.7;color:rgba(13,11,10,.8)}
 .buy .fine{
   margin:16px 0 0;font-family:var(--util);font-size:9.5px;letter-spacing:.16em;
   text-transform:uppercase;color:rgba(13,11,10,.55);
@@ -1125,10 +1137,17 @@ praying for the kindness of strangers</pre>
         <div><b>Dialogue</b><span>Built to be heard</span></div>
       </div>
 
-      <a class="buy-cta" href="https://www.amazon.com/Spoken-Jazz-Tingg-Machine-episodic-ebook/dp/B0H37R6NS3" target="_blank" rel="noopener">
-        <span>Buy on Amazon</span><span class="arr">→</span>
-      </a>
-      <p class="fine">Opens amazon.com in a new tab</p>
+      <p class="fund">The book is out. The audio musical isn't — a full cast, original music, and about seven hours of radio built to be heard, plus a record of the songs. That part is being funded now.</p>
+
+      <div class="buy-acts">
+        <a class="buy-cta" href="https://www.amazon.com/Spoken-Jazz-Tingg-Machine-episodic-ebook/dp/B0H37R6NS3" target="_blank" rel="noopener">
+          <span>Buy on Amazon</span><span class="arr">→</span>
+        </a>
+        <a class="buy-cta ghost" href="https://spot.fund/1q76n2sc" target="_blank" rel="noopener">
+          <span>Back the production</span><span class="arr">→</span>
+        </a>
+      </div>
+      <p class="fine">Amazon and Spotfund open in a new tab</p>
     </div>
   </div>
 </section>
