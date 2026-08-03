@@ -3,7 +3,7 @@
 Promotional site for *Spoken Jazz & the tingg\* Machine* — an epicsodic jazz
 audio musical by Bub Pratt.
 
-**Live:** https://earthwisegrounding.github.io/spoken-jazz-tingg-machine/
+**Live:** https://tinggmachine.com
 
 ## Build
 
@@ -19,3 +19,4 @@ This writes `index.html` (the deployed site, loading images from `assets/`) and
 - `_src/site.src.html` — the source (edit this)
 - `assets/` — images and the opening video
 - `index.html` — built output served by GitHub Pages
+- `CNAME` — the custom domain; Pages reads it, the build leaves it alone
