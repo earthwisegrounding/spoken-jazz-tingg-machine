@@ -344,6 +344,7 @@ a{color:inherit}
   margin:.05em .1em 0 0;color:var(--ink);
 }
 .prose b{font-weight:400;color:var(--ink);border-bottom:2px solid var(--pink);padding-bottom:1px}
+.dark .prose b{color:var(--bone)}   /* near-black ink is invisible on the dark plates */
 
 .side{position:relative}
 .tape{
@@ -742,6 +743,20 @@ a{color:inherit}
 }
 .reel-buy:hover,.reel-buy:focus-visible{background:var(--pink);border-color:var(--pink);color:#0d0b0a}
 
+/* ═══════════ THE ENVELOPE ═══════════════════════════════════ */
+.envelope{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.85fr);gap:clamp(30px,5vw,80px);align-items:start}
+@media (max-width:900px){.envelope{grid-template-columns:1fr;gap:30px}}
+.env-quote{
+  margin:0;padding:clamp(24px,3vw,38px);border:1px solid rgba(244,240,230,.22);
+  font-family:var(--standard);font-style:italic;font-size:clamp(19px,2.3vw,30px);
+  line-height:1.4;color:var(--bone);
+}
+.env-quote cite{
+  display:block;font-style:normal;font-family:var(--util);font-size:9.5px;
+  letter-spacing:.2em;text-transform:uppercase;opacity:.5;margin-top:18px;
+}
+@media (min-width:901px){.env-quote{margin-top:clamp(40px,7vh,96px)}}
+
 /* ═══════════ COLOPHON ═══════════════════════════════════════ */
 .colophon{background:#0d0b0a;color:var(--bone);padding:clamp(56px,9vh,110px) var(--gut) 40px;padding-right:calc(var(--gut) + var(--rail))}
 @media (max-width:900px){.colophon{padding-right:var(--gut)}}
@@ -1118,9 +1133,30 @@ praying for the kindness of strangers</pre>
   </div>
 </section>
 
+<!-- ══════════════════ THE ENVELOPE ══════════════════ -->
+<section class="sec dark" id="s7">
+  <div class="eyebrow label"><span class="n">07</span><span>The Envelope</span><span class="line"></span><span>Hilo, late 2023</span></div>
+
+  <div class="envelope">
+    <h2 class="h2 poster rise" style="max-width:15ch"><span class="mis"><span class="t">A gift from his former self</span></span></h2>
+
+    <div class="prose rise" style="margin-top:30px;color:rgba(244,240,230,.72)">
+      <p>Twenty years after the last one came off the machine, an intern was clearing out the old walk-in freezer at <b>Kukuau Studio</b> in downtown Hilo — a bakery once, a storage and isolation room now — and found a sealed manila envelope. It was addressed to Bub. It was postmarked 2003.</p>
+      <p>Inside were all three books, looking like they'd come from Kinko's that morning. He had forgotten mailing them. He had forgotten the envelope existed at all, filed badly in a stack of notebooks and clippings that followed him across an ocean.</p>
+      <p>The third one he had given up for lost fifteen years earlier, after being pressured into throwing the original manuscripts into a dumpster.</p>
+      <p>What you can buy now is those three books, set as one volume for the first time — kept as typed, vulgarity and all. Everything else on this page is the work that grew out of opening that envelope.</p>
+    </div>
+
+    <blockquote class="rise env-quote">
+      Have you ever received a gift from your former self?
+      <cite>Bub Pratt — Author's Note</cite>
+    </blockquote>
+  </div>
+</section>
+
 <!-- ══════════════════ BUY ══════════════════ -->
-<section class="sec buy" id="s7">
-  <div class="eyebrow label"><span class="n">07</span><span>Get the Book</span><span class="line"></span><span>Out now</span></div>
+<section class="sec buy" id="s8">
+  <div class="eyebrow label"><span class="n">08</span><span>Get the Book</span><span class="line"></span><span>Out now</span></div>
 
   <div class="buy-grid">
     <div class="buy-art rise">
@@ -1129,15 +1165,15 @@ praying for the kindness of strangers</pre>
 
     <div class="rise">
       <h2 class="poster">Read it.<br>Then hear it.</h2>
-      <p class="sell">Twenty-two scenes, twenty-two standards, and one shipyard town that had no idea what was about to happen to it. Available now on Kindle.</p>
+      <p class="sell">Coffee-shop poems, road stories and typewriter rants, written between 2001 and 2003 on those little marble memo pads and the machine itself. Three hand-made books, set as one volume for the first time.</p>
 
       <div class="formats">
-        <div><b>Kindle</b><span>Ebook</span></div>
-        <div><b>384 pp.</b><span>Two acts</span></div>
-        <div><b>Dialogue</b><span>Built to be heard</span></div>
+        <div><b>Paperback</b><span>&amp; digital</span></div>
+        <div><b>Three books</b><span>2001 · 2002 · 2003</span></div>
+        <div><b>Verbatim</b><span>Printed as typed</span></div>
       </div>
 
-      <p class="fund">The book is out. The audio musical isn't — a full cast, original music, and about seven hours of radio built to be heard, plus a record of the songs. That part is being funded now.</p>
+      <p class="fund">The book came first on purpose — it pays for the rest. Still to come: the audio musical itself, a full cast and score and about seven hours of radio built to be heard, and Bub's first jazz record. That part is being funded now.</p>
 
       <div class="buy-acts">
         <a class="buy-cta" href="https://www.amazon.com/Spoken-Jazz-Tingg-Machine-episodic-ebook/dp/B0H37R6NS3" target="_blank" rel="noopener">
@@ -1147,7 +1183,7 @@ praying for the kindness of strangers</pre>
           <span>Back the production</span><span class="arr">→</span>
         </a>
       </div>
-      <p class="fine">Amazon and Spotfund open in a new tab</p>
+      <p class="fine">Amazon and Spotfund open in a new tab · Explicit language, left as written</p>
     </div>
   </div>
 </section>
@@ -1156,13 +1192,14 @@ praying for the kindness of strangers</pre>
 <footer class="colophon">
   <div class="memoriam">
     <img src="{{ASSET:emblem.jpg}}" alt="" aria-hidden="true">
-    <p>In loving memory of William Lawson</p>
-    <small>Bill · who had the underground bar in his townhouse flat</small>
+    <p>In loving memory of William Lawson &amp; Zachary Pratt</p>
+    <small>Bill · who had the underground bar in his townhouse flat<br>Zach · Bub's brother</small>
   </div>
 
   <div class="colo-grid">
     <div><strong>Spoken Jazz &amp; the tingg* Machine</strong>An epicsodic jazz audio musical<br>Two acts · Twenty-two scenes</div>
-    <div><strong>Written by</strong>Bub Pratt<br>Kitsap County, Washington</div>
+    <div><strong>Written by</strong>Bub Pratt<br>Hilo, Hawaii</div>
+    <div><strong>Published by</strong>Newman Springs Publishing<br>Meadville, PA · 2026</div>
     <div><strong>Set in</strong>Bremerton · Silverdale · Manette<br>Kingston · Poulsbo · Bainbridge</div>
     <div><strong>Printed</strong>Two inks, out of register<br>on the machine itself</div>
   </div>
@@ -1381,7 +1418,8 @@ sndBtn.addEventListener("click", function(){
    THE PLATEN RAIL
    ───────────────────────────────────────────────────────────── */
 var SECS=[["s0","Cold Open"],["s1","The Premise"],["s2","The Setlist"],["s3","The Machine"],
-          ["s4","Off the Page"],["s5","The Company"],["s6","The Author"],["s7","Get the Book"]];
+          ["s4","Off the Page"],["s5","The Company"],["s6","The Author"],["s7","The Envelope"],
+          ["s8","Get the Book"]];
 var stops=document.getElementById("stops"), scale=document.getElementById("scale"),
     carr=document.getElementById("carriage"), pageno=document.getElementById("pageno"),
     rail=document.getElementById("rail"), mprog=document.getElementById("mprog");
@@ -1921,7 +1959,7 @@ document.querySelectorAll(".rise").forEach(function(el){ rObs.observe(el); });
 window.addEventListener("keydown",function(e){
   if(live) return;
   var t=e.target; if(t&&(t.tagName==="INPUT"||t.tagName==="TEXTAREA")) return;
-  if(e.key>="0"&&e.key<="7"){
+  if(e.key>="0"&&e.key<="8"){
     var s=SECS[+e.key]; if(s) document.getElementById(s[0]).scrollIntoView({behavior:RM?"auto":"smooth"});
   }
   if(e.key==="s"||e.key==="S") sndBtn.click();
