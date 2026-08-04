@@ -128,6 +128,8 @@ a{color:inherit}
 .dark .plate::after{background-image:radial-gradient(circle,#0d0b0a 34%,transparent 36%);mix-blend-mode:darken}
 .plate.ink img{filter:grayscale(1) contrast(1.5);mix-blend-mode:multiply}
 .plate.raw img{filter:none;mix-blend-mode:normal}
+/* the time lapse sits on the plate exactly as a still would */
+.plate video{width:100%;display:block;filter:none;mix-blend-mode:normal}
 .plate.raw::after{opacity:.3}
 
 /* registration marks */
@@ -1004,9 +1006,15 @@ a{color:inherit}
         <div class="pinned">
           <span class="tape" style="top:-11px;left:16%;transform:rotate(-3deg)"></span>
           <span class="tape" style="bottom:-9px;right:12%;transform:rotate(2.4deg)"></span>
-          <div class="plate raw"><img src="assets/cover.jpg" alt="Cover art: a Volkswagen bus, a typewriter, a black rooster and the Puget Sound"></div>
+          <div class="plate raw">
+            <video class="lapse" id="lapse" muted loop playsinline disablepictureinpicture
+                   preload="metadata" poster="assets/lapse-poster.jpg"
+                   aria-label="Time lapse: the Wonderbus parked above the water with the typewriter on a folding stool, a ferry crossing, a day turning to night and back">
+              <source src="assets/lapse.mp4" type="video/mp4">
+            </video>
+          </div>
         </div>
-        <figcaption>Sleeve art — the Wonderbus, the machine,<br>the rooster &amp; the sound.</figcaption>
+        <figcaption>The Wonderbus, the machine, the rooster<br>&amp; a whole day on the sound.</figcaption>
       </figure>
     </div>
   </div>
@@ -2179,6 +2187,24 @@ var rObs=new IntersectionObserver(function(es){
   });
 },{threshold:.16,rootMargin:"0px 0px -8% 0px"});
 document.querySelectorAll(".rise").forEach(function(el){ rObs.observe(el); });
+
+/* ─────────────────────────────────────────────────────────────
+   THE TIME LAPSE — silent, and it only runs while it is on screen,
+   so it costs nothing in battery or bytes further down the page.
+   Anyone asking for less motion keeps the poster frame instead;
+   racing clouds are exactly what that setting is for.
+   ───────────────────────────────────────────────────────────── */
+(function(){
+  var v=document.getElementById("lapse");
+  if(!v||RM) return;
+  v.muted=true;                       /* belt and braces: the file has no audio track */
+  new IntersectionObserver(function(es){
+    es.forEach(function(en){
+      if(en.isIntersecting) v.play().catch(function(){});
+      else v.pause();
+    });
+  },{threshold:.15}).observe(v);
+})();
 
 /* number keys jump; ? for the legend */
 window.addEventListener("keydown",function(e){
