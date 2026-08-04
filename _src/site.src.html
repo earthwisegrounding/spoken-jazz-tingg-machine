@@ -705,6 +705,15 @@ a{color:inherit}
   border-right:1px solid rgba(13,11,10,.3);
 }
 .buy .formats div:last-child{border-right:0;margin-right:0;padding-right:0}
+/* stacked, the dividing rule has to turn ninety degrees or it dangles mid-row */
+@media (max-width:680px){
+  .buy .formats{display:block}
+  .buy .formats div{
+    border-right:0;margin-right:0;padding:11px 0;
+    border-bottom:1px solid rgba(13,11,10,.24);
+  }
+  .buy .formats div:last-child{border-bottom:0}
+}
 .buy .formats b{
   display:block;font-family:var(--poster);font-weight:900;text-transform:uppercase;
   letter-spacing:-.02em;font-size:clamp(15px,1.7vw,21px);line-height:1.1;
@@ -1169,21 +1178,24 @@ praying for the kindness of strangers</pre>
 
       <div class="formats">
         <div><b>Paperback</b><span>&amp; digital</span></div>
+        <div><b>Audiobook</b><span>2 hr 59 min · read by Bub</span></div>
         <div><b>Three books</b><span>2001 · 2002 · 2003</span></div>
-        <div><b>Verbatim</b><span>Printed as typed</span></div>
       </div>
 
-      <p class="fund">The book came first on purpose — it pays for the rest. Still to come: the audio musical itself, a full cast and score and about seven hours of radio built to be heard, and Bub's first jazz record. That part is being funded now.</p>
+      <p class="fund">The audiobook is Bub reading the poems himself. The musical is a different animal and it doesn't exist yet — a full cast, a score, about seven hours of radio built to be heard, and his first jazz record alongside it. The book came out first on purpose: it pays for the rest, and that part is being funded now.</p>
 
       <div class="buy-acts">
         <a class="buy-cta" href="https://www.amazon.com/Spoken-Jazz-Tingg-Machine-episodic-ebook/dp/B0H37R6NS3" target="_blank" rel="noopener">
           <span>Buy on Amazon</span><span class="arr">→</span>
         </a>
+        <a class="buy-cta ghost" href="https://www.amazon.com/dp/B0H6R85SHL" target="_blank" rel="noopener">
+          <span>Hear Bub read it</span><span class="arr">→</span>
+        </a>
         <a class="buy-cta ghost" href="https://spot.fund/1q76n2sc" target="_blank" rel="noopener">
           <span>Back the production</span><span class="arr">→</span>
         </a>
       </div>
-      <p class="fine">Amazon and Spotfund open in a new tab · Explicit language, left as written</p>
+      <p class="fine">Links open in a new tab · Explicit language, left as written</p>
     </div>
   </div>
 </section>
