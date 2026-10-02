@@ -739,6 +739,22 @@ a{color:inherit}
   width:84px;height:22px;background:rgba(255,46,99,.14);border-left:1px dashed rgba(20,17,16,.12);border-right:1px dashed rgba(20,17,16,.12);
 }
 
+/* ═══════════ LAVA LAMP (section 4) ══════════════════════════ */
+/* A live WebGL lava lamp behind the poems, over a Blender still that shows
+   until it starts and wherever WebGL can't run. */
+/* The canvas is pinned to the viewport and clipped to this section, so the lamp
+   stays screen-sized however long the section runs. */
+.lava{
+  isolation:isolate;color:var(--bone);clip-path:inset(0);
+  background:#2a0628 url("assets/lava-lamp.webp") center/cover fixed;
+}
+.lava-canvas{position:fixed;inset:0;width:100vw;height:100vh;z-index:-1;opacity:0;transition:opacity .6s ease;pointer-events:none}
+.lava .prose{color:rgba(244,240,230,.88)}
+.lava .h2,.lava .eyebrow,.lava .prose{text-shadow:0 2px 18px rgba(30,2,30,.6)}
+.lava .mis .g{mix-blend-mode:screen;opacity:.8}
+.lava .poem{color:var(--ink)}
+.lava .poem{box-shadow:0 26px 50px -28px rgba(10,0,14,.95)}
+
 /* ═══════════ TICKER ═════════════════════════════════════════ */
 .ticker{
   background:var(--pink);color:#0d0b0a;overflow:hidden;padding:12px 0;
@@ -1185,7 +1201,8 @@ a{color:inherit}
 </section>
 
 <!-- ══════════════════ POEMS ══════════════════ -->
-<section class="sec paper" id="s4">
+<section class="sec lava" id="s4">
+  <canvas class="lava-canvas" aria-hidden="true"></canvas>
   <span class="reg-mark" style="top:22px;right:calc(var(--rail) + 22px)"></span>
   <div class="eyebrow label"><span class="n">04</span><span>Off the Page</span><span class="line"></span><span>Four poems, verbatim</span></div>
   <h2 class="h2 poster rise" style="max-width:14ch"><span class="mis"><span class="t">Everything is poetry</span></span></h2>
@@ -2288,6 +2305,107 @@ window.addEventListener("resize",function(){
     d.style.height=d.firstElementChild.offsetHeight+"px";
   });
 });
+})();
+</script>
+
+<script>
+/* Section 4's lava lamp: wax rises off a heated pool, merges, pinches apart
+   and sinks. Same shader as the Boom Town app. Runs only while on screen. */
+(function () {
+  var sec = document.getElementById("s4");
+  var canvas = sec && sec.querySelector(".lava-canvas");
+  if (!canvas) return;
+  var gl = canvas.getContext("webgl", { antialias: false, alpha: false, powerPreference: "low-power" });
+  if (!gl || !gl.getExtension("OES_standard_derivatives")) return;
+
+  var VERT = "attribute vec2 p; void main() { gl_Position = vec4(p, 0.0, 1.0); }";
+  var FRAG = [
+    "#extension GL_OES_standard_derivatives : enable",
+    "precision highp float;",
+    "uniform vec2 uRes; uniform float uTime;",
+    "const int N = 13;",
+    "vec4 blob(int i, float t, float aspect) {",
+    "  float fi = float(i);",
+    "  float x = fract(sin(fi * 12.9898) * 43758.5453);",
+    "  float r = 0.05 + 0.065 * fract(sin(fi * 78.233) * 12345.678);",
+    "  float speed = 0.035 + 0.05 * fract(sin(fi * 3.7) * 999.1);",
+    "  float phase = fi * 1.731;",
+    "  float y = 0.5 - 0.62 * cos(t * speed * 6.2831 + phase);",
+    "  float drift = 0.05 * sin(t * speed * 9.0 + fi);",
+    "  float swell = 1.0 + 0.18 * sin(t * speed * 6.2831 + phase + 1.2);",
+    "  return vec4((0.06 + x * 0.88 + drift) * aspect, y, r * swell, 0.0);",
+    "}",
+    "void main() {",
+    "  vec2 uv = gl_FragCoord.xy / uRes;",
+    "  float aspect = uRes.x / uRes.y;",
+    "  vec2 pos = vec2(uv.x * aspect, uv.y);",
+    "  float t = uTime; float f = 0.0; vec2 grad = vec2(0.0);",
+    "  for (int i = 0; i < N; i++) {",
+    "    vec4 b = blob(i, t, aspect);",
+    "    vec2 d = pos - b.xy; float d2 = dot(d, d) + 1e-4;",
+    "    float k1 = b.z * b.z / d2; float k = k1 * k1;",
+    "    f += k; grad += -4.0 * k / d2 * d;",
+    "  }",
+    "  float by = max(uv.y + 0.04, 0.02); float ty = max(1.03 - uv.y, 0.02);",
+    "  float bottom = pow((0.075 + 0.012 * sin(uv.x * 7.0 + t * 0.3)) / by, 4.0);",
+    "  float top = pow(0.035 / ty, 4.0);",
+    "  f += bottom + top; grad.y += -4.0 * bottom / by + 4.0 * top / ty;",
+    "  vec3 deep = vec3(0.10, 0.015, 0.13); vec3 mag = vec3(0.42, 0.04, 0.34); vec3 heat = vec3(0.92, 0.30, 0.10);",
+    "  vec3 bg = mix(heat, mag, smoothstep(0.0, 0.42, uv.y)); bg = mix(bg, deep, smoothstep(0.38, 1.0, uv.y));",
+    "  bg += vec3(0.55, 0.14, 0.04) * smoothstep(0.25, 1.0, f) * 0.35;",
+    "  float depth = clamp(clamp(1.0 - 1.0 / max(f, 1.0), 0.0, 1.0) * 1.6, 0.0, 1.0);",
+    "  vec3 wax = mix(vec3(0.55, 0.03, 0.03), vec3(1.0, 0.46, 0.06), pow(depth, 0.55));",
+    "  wax += vec3(0.25, 0.1, 0.0) * (1.0 - uv.y) * depth;",
+    "  vec3 n = normalize(vec3(-grad * 0.012 / max(f, 1.0), 1.0));",
+    "  float spec = pow(max(dot(n, normalize(vec3(-0.35, 0.7, 1.0))), 0.0), 24.0);",
+    "  wax += vec3(1.0, 0.8, 0.6) * spec * 0.35;",
+    "  float edge = fwidth(f) * 1.5 + 0.02;",
+    "  vec3 col = mix(bg, wax, smoothstep(1.0 - edge, 1.0 + edge, f));",
+    "  vec2 v = uv - 0.5; col *= 1.0 - 0.45 * dot(v * vec2(1.2, 0.9), v * vec2(1.2, 0.9));",
+    "  gl_FragColor = vec4(col, 1.0);",
+    "}"
+  ].join("\n");
+
+  function shader(type, src) {
+    var s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s));
+    return s;
+  }
+  var prog;
+  try {
+    prog = gl.createProgram();
+    gl.attachShader(prog, shader(gl.VERTEX_SHADER, VERT));
+    gl.attachShader(prog, shader(gl.FRAGMENT_SHADER, FRAG));
+    gl.linkProgram(prog);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog));
+  } catch (e) { console.warn("lava lamp: using the still", e); return; }
+  gl.useProgram(prog);
+  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+  var loc = gl.getAttribLocation(prog, "p");
+  gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+  var uRes = gl.getUniformLocation(prog, "uRes"), uTime = gl.getUniformLocation(prog, "uTime");
+
+  var SCALE = 0.5, start = performance.now() - 40000, frame = 0, onScreen = false;
+  var still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function resize() {
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.max(1, Math.round(window.innerWidth * dpr * SCALE));
+    canvas.height = Math.max(1, Math.round(window.innerHeight * dpr * SCALE));
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    gl.uniform2f(uRes, canvas.width, canvas.height);
+    draw(performance.now());
+  }
+  function draw(now) { gl.uniform1f(uTime, (now - start) / 1000); gl.drawArrays(gl.TRIANGLES, 0, 3); }
+  function loop(now) { draw(now); frame = onScreen ? requestAnimationFrame(loop) : 0; }
+  window.addEventListener("resize", resize);
+  resize();
+  canvas.style.opacity = "1";
+  if (still) return;
+  new IntersectionObserver(function (entries) {
+    onScreen = entries[0].isIntersecting;
+    if (onScreen && !frame) frame = requestAnimationFrame(loop);
+  }).observe(sec);
 })();
 </script>
 
