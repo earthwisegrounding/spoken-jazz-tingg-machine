@@ -2235,7 +2235,8 @@ window.addEventListener("resize",function(){
 
 <script>
 /* Section 4's lava lamp: wax rises off a heated pool, merges, pinches apart
-   and sinks. Same shader as the Boom Town app. Runs only while on screen. */
+   and sinks, sticking together as real wax does. Same as the Boom Town app.
+   Runs only while on screen. */
 (function () {
   var sec = document.getElementById("s4");
   var canvas = sec && sec.querySelector(".lava-canvas");
@@ -2243,30 +2244,66 @@ window.addEventListener("resize",function(){
   var gl = canvas.getContext("webgl", { antialias: false, alpha: false, powerPreference: "low-power" });
   if (!gl || !gl.getExtension("OES_standard_derivatives")) return;
 
+  // Wax physics (same as Boom Town's lava-sim.ts): heated at the bottom it rises, cooled at
+  // the top it sinks, touching wax sticks and travels together, and clumps tear apart once
+  // their parts have heated or cooled differently enough.
+  function createLava(n, aspect) {
+    var out = [];
+    for (var i = 0; i < n; i++) out.push({ x: (0.1 + 0.8 * Math.random()) * aspect, y: 0.1 + 0.8 * Math.random(), vx: 0, vy: 0, r: 0.05 + 0.065 * Math.random(), t: Math.random() });
+    return out;
+  }
+  function stepLava(b, aspect, dt) {
+    var i, j, p, q;
+    for (i = 0; i < b.length; i++) {
+      p = b[i];
+      var rate = 0.35 * (0.07 / p.r);
+      if (p.y < 0.32) p.t = Math.min(1, p.t + rate * dt * ((0.32 - p.y) / 0.32) * 5);
+      if (p.y > 0.8) p.t = Math.max(0, p.t - rate * dt * ((p.y - 0.8) / 0.2) * 2);
+      p.t = Math.max(0, p.t - rate * 0.06 * dt);
+      p.vy += (p.t - 0.5) * 0.4 * dt;
+    }
+    var lim = 0.08 * dt, grip = function (v) { return Math.max(-lim, Math.min(lim, v)); };
+    for (i = 0; i < b.length; i++) for (j = i + 1; j < b.length; j++) {
+      p = b[i]; q = b[j];
+      var dx = q.x - p.x, dy = q.y - p.y, d = Math.hypot(dx, dy) + 1e-6, reach = (p.r + q.r) * 1.05;
+      if (d > reach) continue;
+      var mp = p.r * p.r, mq = q.r * q.r, m = mp + mq, f = (d - (p.r + q.r) * 0.7) * 0.9 * dt, ux = dx / d, uy = dy / d;
+      p.vx += ux * f * (mq / m); p.vy += uy * f * (mq / m);
+      q.vx -= ux * f * (mp / m); q.vy -= uy * f * (mp / m);
+      var stick = Math.min(1, 1.4 * dt) * (1 - d / reach);
+      var avx = (p.vx * mp + q.vx * mq) / m, avy = (p.vy * mp + q.vy * mq) / m;
+      p.vx += grip((avx - p.vx) * stick); p.vy += grip((avy - p.vy) * stick);
+      q.vx += grip((avx - q.vx) * stick); q.vy += grip((avy - q.vy) * stick);
+      var at = (p.t * mp + q.t * mq) / m, heat = Math.min(1, 0.02 * dt);
+      p.t += (at - p.t) * heat; q.t += (at - q.t) * heat;
+    }
+    var drag = Math.exp(-1.6 * dt);
+    for (i = 0; i < b.length; i++) {
+      p = b[i];
+      p.vx = p.vx * drag + (Math.random() - 0.5) * 0.004 * dt; p.vy *= drag;
+      p.x += p.vx * dt; p.y += p.vy * dt;
+      var lo = p.r * 0.6, hi = aspect - p.r * 0.6;
+      if (p.x < lo) { p.x = lo; p.vx = Math.abs(p.vx) * 0.3; }
+      if (p.x > hi) { p.x = hi; p.vx = -Math.abs(p.vx) * 0.3; }
+      if (p.y < 0.02) { p.y = 0.02; p.vy = Math.max(0, p.vy); }
+      if (p.y > 0.98) { p.y = 0.98; p.vy = Math.min(0, p.vy); }
+    }
+  }
+
   var VERT = "attribute vec2 p; void main() { gl_Position = vec4(p, 0.0, 1.0); }";
   var FRAG = [
     "#extension GL_OES_standard_derivatives : enable",
     "precision highp float;",
     "uniform vec2 uRes; uniform float uTime;",
-    "const int N = 13;",
-    "vec4 blob(int i, float t, float aspect) {",
-    "  float fi = float(i);",
-    "  float x = fract(sin(fi * 12.9898) * 43758.5453);",
-    "  float r = 0.05 + 0.065 * fract(sin(fi * 78.233) * 12345.678);",
-    "  float speed = 0.035 + 0.05 * fract(sin(fi * 3.7) * 999.1);",
-    "  float phase = fi * 1.731;",
-    "  float y = 0.5 - 0.62 * cos(t * speed * 6.2831 + phase);",
-    "  float drift = 0.05 * sin(t * speed * 9.0 + fi);",
-    "  float swell = 1.0 + 0.18 * sin(t * speed * 6.2831 + phase + 1.2);",
-    "  return vec4((0.06 + x * 0.88 + drift) * aspect, y, r * swell, 0.0);",
-    "}",
+    "const int N = 12;",
+    "uniform vec3 uB[N];",
     "void main() {",
     "  vec2 uv = gl_FragCoord.xy / uRes;",
     "  float aspect = uRes.x / uRes.y;",
     "  vec2 pos = vec2(uv.x * aspect, uv.y);",
     "  float t = uTime; float f = 0.0; vec2 grad = vec2(0.0);",
     "  for (int i = 0; i < N; i++) {",
-    "    vec4 b = blob(i, t, aspect);",
+    "    vec3 b = uB[i];",
     "    vec2 d = pos - b.xy; float d2 = dot(d, d) + 1e-4;",
     "    float k1 = b.z * b.z / d2; float k = k1 * k1;",
     "    f += k; grad += -4.0 * k / d2 * d;",
@@ -2310,8 +2347,12 @@ window.addEventListener("resize",function(){
   var loc = gl.getAttribLocation(prog, "p");
   gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
   var uRes = gl.getUniformLocation(prog, "uRes"), uTime = gl.getUniformLocation(prog, "uTime");
+  var uB = gl.getUniformLocation(prog, "uB");
 
-  var SCALE = 0.5, start = performance.now() - 40000, frame = 0, onScreen = false;
+  var SCALE = 0.5, start = performance.now(), last = start, frame = 0, onScreen = false;
+  var aspect = window.innerWidth / Math.max(1, window.innerHeight);
+  var blobs = createLava(12, aspect), packed = new Float32Array(36);
+  for (var w = 0; w < 60 * 25; w++) stepLava(blobs, aspect, 1 / 60);   // warm up: open mid-flow
   var still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   function resize() {
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -2319,9 +2360,22 @@ window.addEventListener("resize",function(){
     canvas.height = Math.max(1, Math.round(window.innerHeight * dpr * SCALE));
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.uniform2f(uRes, canvas.width, canvas.height);
+    var next = canvas.width / canvas.height;
+    for (var i = 0; i < blobs.length; i++) blobs[i].x *= next / aspect;
+    aspect = next;
     draw(performance.now());
   }
-  function draw(now) { gl.uniform1f(uTime, (now - start) / 1000); gl.drawArrays(gl.TRIANGLES, 0, 3); }
+  function draw(now) {
+    stepLava(blobs, aspect, Math.min(0.05, Math.max(0, now - last) / 1000));
+    last = now;
+    for (var i = 0; i < blobs.length; i++) {
+      var b = blobs[i];
+      packed[i * 3] = b.x; packed[i * 3 + 1] = b.y; packed[i * 3 + 2] = b.r * (0.92 + 0.16 * b.t);
+    }
+    gl.uniform3fv(uB, packed);
+    gl.uniform1f(uTime, (now - start) / 1000);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  }
   function loop(now) { draw(now); frame = onScreen ? requestAnimationFrame(loop) : 0; }
   window.addEventListener("resize", resize);
   resize();
