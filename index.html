@@ -661,7 +661,9 @@ a{color:inherit}
 .bell.ring{opacity:1;transition:none}
 
 /* ═══════════ POEMS ══════════════════════════════════════════ */
-.poems{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));gap:clamp(26px,4vw,60px);margin-top:clamp(20px,4vh,40px)}
+/* Two by two on desktop, centered, so the fourth poem never sits alone. */
+.poems{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(26px,4vw,60px);max-width:1080px;margin:clamp(20px,4vh,40px) auto 0}
+@media (max-width:720px){.poems{grid-template-columns:1fr}}
 .poem{position:relative;background:var(--bone);padding:clamp(24px,3vw,40px);box-shadow:0 22px 44px -34px rgba(20,17,16,.9)}
 .poem:nth-child(1){transform:rotate(-.75deg)}
 .poem:nth-child(2){transform:rotate(.6deg)}
