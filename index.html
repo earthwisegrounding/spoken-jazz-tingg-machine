@@ -851,16 +851,17 @@ a{color:inherit}
 /* ═══════════ THE ENVELOPE ═══════════════════════════════════ */
 .envelope{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.85fr);gap:clamp(30px,5vw,80px);align-items:start}
 @media (max-width:900px){.envelope{grid-template-columns:1fr;gap:30px}}
-.env-quote{
-  margin:0;padding:clamp(24px,3vw,38px);border:1px solid rgba(244,240,230,.22);
-  font-family:var(--standard);font-style:italic;font-size:clamp(19px,2.3vw,30px);
-  line-height:1.4;color:var(--bone);
+.env-zines{margin:0;max-width:560px}
+.env-zines-row{display:flex;align-items:center;gap:clamp(10px,1.6vw,20px)}
+.env-zines-row img{display:block;flex:1 1 0;min-width:0;height:auto;box-shadow:0 16px 30px rgba(0,0,0,.6)}
+.env-zines-row img:nth-child(1){transform:rotate(-4deg)}
+.env-zines-row img:nth-child(2){transform:rotate(1.5deg)}
+.env-zines-row img:nth-child(3){transform:rotate(5deg)}
+.env-zines figcaption{
+  font-family:var(--util);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--bone);opacity:.5;margin-top:22px;
 }
-.env-quote cite{
-  display:block;font-style:normal;font-family:var(--util);font-size:9.5px;
-  letter-spacing:.2em;text-transform:uppercase;opacity:.5;margin-top:18px;
-}
-@media (min-width:901px){.env-quote{margin-top:clamp(40px,7vh,96px)}}
+@media (min-width:901px){.env-zines{margin-top:clamp(40px,7vh,96px)}}
 
 /* ═══════════ COLOPHON ═══════════════════════════════════════ */
 .colophon{background:#0d0b0a;color:var(--bone);padding:clamp(56px,9vh,110px) var(--gut) 40px;padding-right:calc(var(--gut) + var(--rail))}
@@ -1276,19 +1277,23 @@ praying for the kindness of strangers</pre>
   <div class="eyebrow label"><span class="n">07</span><span>The Envelope</span><span class="line"></span><span>Hilo, late 2023</span></div>
 
   <div class="envelope">
-    <h2 class="h2 poster rise" style="max-width:15ch"><span class="mis"><span class="t">A gift from his former self</span></span></h2>
+    <h2 class="h2 poster rise" style="max-width:15ch"><span class="mis"><span class="t">Have you ever received a gift from your former self?</span></span></h2>
 
     <div class="prose rise" style="margin-top:30px;color:rgba(244,240,230,.72)">
-      <p>Twenty years after the last one came off the machine, an intern was clearing out the old walk-in freezer at <b>Kukuau Studio</b> in downtown Hilo — a bakery once, a storage and isolation room now — and found a sealed manila envelope. It was addressed to Bub. It was postmarked 2003.</p>
-      <p>Inside were all three books, looking like they'd come from Kinko's that morning. He had forgotten mailing them. He had forgotten the envelope existed at all, filed badly in a stack of notebooks and clippings that followed him across an ocean.</p>
-      <p>The third one he had given up for lost fifteen years earlier, after being pressured into throwing the original manuscripts into a dumpster.</p>
-      <p>What you can buy now is those three books, set as one volume for the first time — kept as typed, vulgarity and all. Everything else on this page is the work that grew out of opening that envelope.</p>
+      <p>Twenty years after the last printing came from Kinkos, an intern was clearing out the old walk-in freezer at <b>Kukuau Studio</b> in downtown Hilo, built by Hatata Bakery, now used for storage &amp; an isolation booth — she found a box of papers Bub brought from the mainland &amp; found a long forgotten sealed manila envelope. It was addressed to Bub, postmarked 2003.</p>
+      <p>Inside were all three books, looking like they'd come from Kinko's that morning. He had forgotten mailing them to himself as a poor man's copyright, virtually invisible in a stack of notebooks &amp; newspaper clippings that followed him across the ocean.</p>
+      <p>The third zine he had given up for lost fifteen years earlier, after being pressured into throwing the original manuscripts into a dumpster.</p>
+      <p>What's been published are those three zines, set as one volume for the first time — unedited, vulgarity and all. The rest of this project is the work that grew out of this envelope.</p>
     </div>
 
-    <blockquote class="rise env-quote">
-      Have you ever received a gift from your former self?
-      <cite>Bub Pratt — Author's Note</cite>
-    </blockquote>
+    <figure class="rise env-zines">
+      <div class="env-zines-row">
+        <img src="assets/zine-bebop.webp" width="721" height="560" style="flex-grow:1.29" alt="Original cover of Be-Bop Coffee Shop by Bub Pratt" loading="lazy">
+        <img src="assets/zine-fabulous.webp" width="450" height="720" style="flex-grow:.625" alt="Original cover of The Fabulous Adventures of Yours Truly, a book of poetry &amp; prose by Bub Pratt" loading="lazy">
+        <img src="assets/zine-spoken.webp" width="364" height="600" style="flex-grow:.607" alt="Original cover of Spoken Jazz &amp; the Tingg* Machine by Bub Pratt" loading="lazy">
+      </div>
+      <figcaption>The original covers</figcaption>
+    </figure>
   </div>
 </section>
 
