@@ -310,6 +310,9 @@ a{color:inherit}
   position:absolute;inset:4% 4% 4% 22%;
   background:url("{{ASSET:coffee.png}}") center/contain no-repeat;
   mix-blend-mode:multiply;transform:rotate(-6deg);
+  /* let the left side of the ring sink into the page instead of ending on a hard edge */
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 24%);
+  mask-image:linear-gradient(90deg,transparent 0,#000 24%);
 }
 /* the same halftone screen every other plate on the page gets */
 .journal::before{
