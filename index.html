@@ -854,6 +854,15 @@ a{color:inherit}
 /* ═══════════ THE ENVELOPE ═══════════════════════════════════ */
 .envelope{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.85fr);gap:clamp(30px,5vw,80px);align-items:start}
 @media (max-width:900px){.envelope{grid-template-columns:1fr;gap:30px}}
+/* the letters are windows: the painting sits behind the headline and only
+   shows through the glyphs */
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+  .env-h .mis .t{
+    background:url("assets/gift-painting.webp") center/cover no-repeat;
+    -webkit-background-clip:text;background-clip:text;
+    color:transparent;-webkit-text-fill-color:transparent;
+  }
+}
 .env-prose{margin-top:30px;max-width:56ch;font-size:clamp(17px,1.45vw,19px);line-height:1.72;color:rgba(244,240,230,.86)}
 .env-zines{grid-column:1/-1;justify-self:center;width:100%;max-width:900px;margin:0;text-align:center}
 .env-zines-row{display:flex;align-items:center;gap:clamp(14px,3vw,40px)}
@@ -1281,7 +1290,7 @@ praying for the kindness of strangers</pre>
   <div class="eyebrow label"><span class="n">07</span><span>The Envelope</span><span class="line"></span><span>Hilo, late 2023</span></div>
 
   <div class="envelope">
-    <h2 class="h2 poster rise" style="max-width:15ch"><span class="mis"><span class="t">Have you ever received a gift from your former self?</span></span></h2>
+    <h2 class="h2 poster rise env-h" style="max-width:15ch"><span class="mis"><span class="t">Have you ever received a gift from your former self?</span></span></h2>
 
     <div class="prose env-prose rise">
       <p>Twenty years after the last printing came from Kinkos, an intern was clearing out the old walk-in freezer at <b>Kukuau Studio</b> in downtown Hilo, built by Hatata Bakery, now used for storage &amp; an isolation booth — she found a box of papers Bub brought from the mainland &amp; found a long forgotten sealed manila envelope. It was addressed to Bub, postmarked 2003.</p>
