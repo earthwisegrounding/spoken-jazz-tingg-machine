@@ -773,8 +773,9 @@ a{color:inherit}
   gap:clamp(26px,5vw,72px);align-items:center;
 }
 @media (max-width:820px){.buy-grid{grid-template-columns:1fr;gap:28px}}
-.buy-art{position:relative;box-shadow:0 26px 60px -30px rgba(13,11,10,.85)}
-.buy-art img{width:100%;display:block}
+/* the cover is a cut-out book, so the shadow follows its edges rather than a box */
+.buy-art{position:relative}
+.buy-art img{width:100%;display:block;filter:drop-shadow(0 22px 26px rgba(13,11,10,.55))}
 .buy h2{margin:0;font-size:clamp(34px,6.4vw,92px);color:#0d0b0a}
 .buy .sell{
   margin:20px 0 0;max-width:46ch;font-size:15.5px;line-height:1.75;
@@ -1304,7 +1305,7 @@ praying for the kindness of strangers</pre>
 
   <div class="buy-grid">
     <div class="buy-art rise">
-      <img src="{{ASSET:cover.jpg}}" alt="Cover of Spoken Jazz &amp; the tingg* Machine by Bub Pratt">
+      <img src="{{ASSET:book-cover.webp}}" alt="Cover of Spoken Jazz &amp; the tingg* Machine by Bub Pratt">
     </div>
 
     <div class="rise">
