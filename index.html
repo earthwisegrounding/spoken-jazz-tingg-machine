@@ -851,8 +851,9 @@ a{color:inherit}
 /* ═══════════ THE ENVELOPE ═══════════════════════════════════ */
 .envelope{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.85fr);gap:clamp(30px,5vw,80px);align-items:start}
 @media (max-width:900px){.envelope{grid-template-columns:1fr;gap:30px}}
-.env-zines{margin:0;max-width:560px}
-.env-zines-row{display:flex;align-items:center;gap:clamp(10px,1.6vw,20px)}
+.env-prose{margin-top:30px;max-width:56ch;font-size:clamp(17px,1.45vw,19px);line-height:1.72;color:rgba(244,240,230,.86)}
+.env-zines{grid-column:1/-1;justify-self:center;width:100%;max-width:900px;margin:0;text-align:center}
+.env-zines-row{display:flex;align-items:center;gap:clamp(14px,3vw,40px)}
 .env-zines-row img{display:block;flex:1 1 0;min-width:0;height:auto;box-shadow:0 16px 30px rgba(0,0,0,.6)}
 .env-zines-row img:nth-child(1){transform:rotate(-4deg)}
 .env-zines-row img:nth-child(2){transform:rotate(1.5deg)}
@@ -861,7 +862,7 @@ a{color:inherit}
   font-family:var(--util);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;
   color:var(--bone);opacity:.5;margin-top:22px;
 }
-@media (min-width:901px){.env-zines{margin-top:clamp(40px,7vh,96px)}}
+@media (min-width:901px){.env-zines{margin-top:clamp(30px,5vh,64px)}}
 
 /* ═══════════ COLOPHON ═══════════════════════════════════════ */
 .colophon{background:#0d0b0a;color:var(--bone);padding:clamp(56px,9vh,110px) var(--gut) 40px;padding-right:calc(var(--gut) + var(--rail))}
@@ -1279,7 +1280,7 @@ praying for the kindness of strangers</pre>
   <div class="envelope">
     <h2 class="h2 poster rise" style="max-width:15ch"><span class="mis"><span class="t">Have you ever received a gift from your former self?</span></span></h2>
 
-    <div class="prose rise" style="margin-top:30px;color:rgba(244,240,230,.72)">
+    <div class="prose env-prose rise">
       <p>Twenty years after the last printing came from Kinkos, an intern was clearing out the old walk-in freezer at <b>Kukuau Studio</b> in downtown Hilo, built by Hatata Bakery, now used for storage &amp; an isolation booth — she found a box of papers Bub brought from the mainland &amp; found a long forgotten sealed manila envelope. It was addressed to Bub, postmarked 2003.</p>
       <p>Inside were all three books, looking like they'd come from Kinko's that morning. He had forgotten mailing them to himself as a poor man's copyright, virtually invisible in a stack of notebooks &amp; newspaper clippings that followed him across the ocean.</p>
       <p>The third zine he had given up for lost fifteen years earlier, after being pressured into throwing the original manuscripts into a dumpster.</p>
