@@ -19,12 +19,17 @@ HEAD = """<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="Spoken Jazz &amp; the tingg* Machine — an epicsodic jazz audio musical by Bub Pratt. Two acts, twenty-two scenes, one Remington portable, and a renaissance in a drab Navy town outside Seattle.">
+<meta name="description" content="Spoken Jazz &amp; the tingg* Machine — an episodic jazz audio musical by Bub Pratt. Two acts, twenty-two scenes, one Remington portable, &amp; a renaissance in a drab Navy town outside Seattle.">
 <meta name="theme-color" content="#0d0b0a">
 <meta property="og:title" content="Spoken Jazz &amp; the tingg* Machine">
-<meta property="og:description" content="An epicsodic jazz audio musical by Bub Pratt. Bremerton, Washington, spring 2000.">
+<meta property="og:description" content="An episodic jazz audio musical by Bub Pratt. Bremerton, Washington, spring 2000.">
 <meta property="og:type" content="book">
-<meta property="og:image" content="assets/cover.jpg">
+<meta property="og:url" content="https://tinggmachine.com/">
+<meta property="og:image" content="https://tinggmachine.com/assets/og-share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The Spoken Jazz &amp; the tingg* Machine paperback beside the title, by Bub Pratt">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="assets/emblem.jpg">
 <style>*{margin:0}html,body{background:#0d0b0a}</style>
 </head>

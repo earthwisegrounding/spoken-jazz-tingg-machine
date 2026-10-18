@@ -1,6 +1,6 @@
 # Spoken Jazz & the tingg* Machine
 
-Promotional site for *Spoken Jazz & the tingg\* Machine* — an epicsodic jazz
+Promotional site for *Spoken Jazz & the tingg\* Machine* — an episodic jazz
 audio musical by Bub Pratt.
 
 **Live:** https://tinggmachine.com
