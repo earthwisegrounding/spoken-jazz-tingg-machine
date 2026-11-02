@@ -37,6 +37,19 @@ HEAD = """<!doctype html>
 """
 FOOT = "\n</body>\n</html>\n"
 
+# Google Analytics (GA4). Only the public index.html gets it, so QA screenshots
+# and the inlined artifact don't count as visits.
+GTAG = """<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NTN800SWV4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NTN800SWV4');
+</script>
+"""
+
 
 def data_uri(name: str) -> str:
     p = ASSETS / name
@@ -50,7 +63,8 @@ def main() -> None:
     src = SRC.read_text(encoding="utf-8")
 
     linked = TOKEN.sub(lambda m: f"assets/{m.group(1)}", src)
-    (ROOT / "index.html").write_text(HEAD + linked + FOOT, encoding="utf-8")
+    page_head = HEAD.replace("<head>\n", "<head>\n" + GTAG, 1)
+    (ROOT / "index.html").write_text(page_head + linked + FOOT, encoding="utf-8")
 
     DIST.mkdir(exist_ok=True)
     inlined = TOKEN.sub(lambda m: data_uri(m.group(1)), src)
